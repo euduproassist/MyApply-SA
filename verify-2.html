@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyApply SA - Review & Verify Your Information</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #0052cc;
+            --secondary-blue: #1d6ed0;
+            --bg-light: #f8fafc;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-green: #10b981;
+            --error-red: #ef4444;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden; /* Guarantees 0% horizontal scroll */
+            padding: 20px 12px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* App Container Layout */
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Top Header Navigation Inside Container */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0c1e43;
+        }
+
+        .brand-logo i {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+
+        .brand-logo span {
+            color: var(--secondary-blue);
+        }
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .profile-menu i.fa-user-circle {
+            font-size: 1.5rem;
+            color: var(--secondary-blue);
+        }
+
+        /* Workflow Wizard Progress Steps */
+        .wizard-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            background: var(--bg-light);
+            padding: 16px;
+            border-radius: 12px;
+            gap: 10px;
+            overflow-x: auto; /* Fallback fallback for ultra small interfaces */
+            scrollbar-width: none;
+        }
+
+        .wizard-steps::-webkit-scrollbar {
+            display: none;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .step-item.active {
+            color: var(--primary-blue);
+        }
+
+        .step-item.completed {
+            color: var(--text-dark);
+        }
+
+        .step-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+        }
+
+        .step-item.completed .step-circle {
+            background: var(--secondary-blue);
+            color: #ffffff;
+            border-color: var(--secondary-blue);
+        }
+
+        .step-item.active .step-circle {
+            background: var(--primary-blue);
+            color: #ffffff;
+            border-color: var(--primary-blue);
+        }
+
+        .step-line {
+            flex-grow: 1;
+            height: 1px;
+            background: var(--border-color);
+            min-width: 20px;
+        }
+
+        /* Section Headings & Legend */
+        .main-title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .main-title-block h1 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .title-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .legend-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .legend-extracted { color: var(--success-green); }
+        .legend-missing { color: var(--error-red); }
+
+        /* Data Section Box Structuring */
+        .data-section {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-header-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            border-bottom: 1px solid var(--bg-light);
+            padding-bottom: 8px;
+        }
+
+        .section-header-row i {
+            color: var(--secondary-blue);
+        }
+
+        /* Data Tables / Rows Layout */
+        .data-row {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 40px 60px;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.85rem;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .field-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .field-value {
+            color: var(--text-dark);
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-indicator i.fa-check-circle { color: var(--success-green); }
+        .status-indicator i.fa-times-circle { color: var(--error-red); }
+
+        .edit-action-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .edit-action-btn:hover {
+            background: var(--bg-light);
+        }
+
+        /* Bottom Security Alert and Callout Banners */
+        .security-note {
+            background: #eff6ff;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.8rem;
+        }
+
+        .security-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .security-left i {
+            font-size: 1.3rem;
+            color: var(--secondary-blue);
+        }
+
+        .security-left strong {
+            color: var(--text-dark);
+        }
+
+        .security-note a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .passport-action-banner {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .banner-identity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .banner-icon-shield {
+            width: 54px;
+            height: 54px;
+            background: #e0f2fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-blue);
+            font-size: 1.4rem;
+        }
+
+        .banner-text-details h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .banner-text-details p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            background: #0056e2;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #0044b3;
+        }
+
+        .system-footer {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        /* CRITICAL RESPONSIVENESS CAPABILITIES (0% Horizontal Scroll) */
+        @media (max-width: 768px) {
+            .data-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                padding: 12px 0;
+            }
+            .field-value {
+                text-align: right;
+            }
+            .status-indicator {
+                grid-column: span 1;
+                justify-content: flex-start;
+                margin-top: 4px;
+            }
+            .edit-action-btn {
+                grid-column: span 1;
+                text-align: center;
+                width: 100%;
+            }
+            .passport-action-banner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .banner-identity {
+                flex-direction: column;
+            }
+            .submit-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 20px 14px;
+            }
+            .wizard-steps {
+                padding: 10px;
+            }
+            .step-item span:not(.step-circle) {
+                display: none; /* Keeps step titles clean on small screens */
+            }
+            .data-row {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .field-value {
+                text-align: left;
+                margin-bottom: 4px;
+            }
+            .status-indicator {
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <header class="app-header">
+            <div class="brand-logo">
+                <i class="fas fa-boxes-stacked"></i> MyApply <span>SA</span>
+            </div>
+            <div class="profile-menu">
+                <i class="far fa-user-circle"></i> Hi, Paul <i class="fas fa-chevron-down" style="font-size: 0.75rem; margin-left:2px;"></i>
+            </div>
+        </header>
+
+        <div class="wizard-steps">
+            <div class="step-item completed">
+                <span class="step-circle"><i class="fas fa-check"></i></span>
+                <span>Upload Documents</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item completed">
+                <span class="step-circle"><i class="fas fa-check"></i></span>
+                <span>AI Extraction</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item active">
+                <span class="step-circle">3</span>
+                <span>Review & Verify</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item">
+                <span class="step-circle">4</span>
+                <span>Your Passport</span>
+            </div>
+        </div>
+
+        <div class="main-title-block">
+            <h1>Review & Verify Your Information</h1>
+            <div class="title-meta-row">
+                <p>Please review the extracted information and make any necessary corrections.</p>
+                <div class="legend-box">
+                    <span class="legend-item legend-extracted"><i class="fas fa-check-circle"></i> Extracted</span>
+                    <span class="legend-item legend-missing"><i class="fas fa-times-circle"></i> Missing</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header-row">
+                <i class="far fa-user"></i> Personal Details
+            </div>
+            
+            <div class="data-row">
+                <div class="field-label">Full Name</div>
+                <div class="field-value">Paul</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Identity Number</div>
+                <div class="field-value">***********</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Date of Birth</div>
+                <div class="field-value">12 May 2006</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Email Address</div>
+                <div class="field-value">paul@example.com</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Phone Number</div>
+                <div class="field-value">067 123 4567</div>
+                <div class="status-indicator"><i class="fas fa-times-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header-row">
+                <i class="fas fa-graduation-cap"></i> School Information
+            </div>
+            
+            <div class="data-row">
+                <div class="field-label">School Name</div>
+                <div class="field-value">ABC High School</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Province</div>
+                <div class="field-value">Gauteng</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Year Completed</div>
+                <div class="field-value">2023</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header-row">
+                <i class="far fa-file-lines"></i> Subjects & Marks
+            </div>
+            
+            <div class="data-row">
+                <div class="field-label">Mathematics</div>
+                <div class="field-value">85%</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">English</div>
+                <div class="field-value">78%</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Physical Sciences</div>
+                <div class="field-value">--</div>
+                <div class="status-indicator"><i class="fas fa-times-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Life Sciences</div>
+                <div class="field-value">--</div>
+                <div class="status-indicator"><i class="fas fa-times-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">APS (Estimated)</div>
+                <div class="field-value">--</div>
+                <div class="status-indicator"><i class="fas fa-times-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header-row">
+                <i class="fas fa-shield-halved"></i> Documents Summary
+            </div>
+            
+            <div class="data-row">
+                <div class="field-label">ID Document</div>
+                <div class="field-value">Extracted successfully</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Matric Results</div>
+                <div class="field-value">Extracted successfully</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Proof of Residence</div>
+                <div class="field-value">Extracted successfully</div>
+                <div class="status-indicator"><i class="fas fa-check-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+            <div class="data-row">
+                <div class="field-label">Other Documents</div>
+                <div class="field-value">No document uploaded</div>
+                <div class="status-indicator"><i class="fas fa-times-circle"></i></div>
+                <div class="edit-action-btn">Edit</div>
+            </div>
+        </div>
+
+        <div class="security-note">
+            <div class="security-left">
+                <i class="fas fa-user-shield"></i>
+                <span><strong>Your data is secure</strong><br>Your documents are encrypted and stored securely.</span>
+            </div>
+            <a href="#">Learn more <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+        </div>
+
+        <div class="passport-action-banner">
+            <div class="banner-identity">
+                <div class="banner-icon-shield">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="banner-text-details">
+                    <h3>One passport. Many opportunities.</h3>
+                    <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
+                </div>
+            </div>
+            <button class="submit-btn">Save & Continue <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <div class="system-footer">
+            &copy; 2026 MyApply SA. All rights reserved.
+        </div>
+
+    </div>
+
+</body>
+</html>
