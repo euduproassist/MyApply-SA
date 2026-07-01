@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyApply SA - AI Extraction Portal</title>
+    <title>MyApply SA - AI Extraction</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --brand-blue: #0061ff;
-            --brand-blue-hover: #004ecc;
-            --bg-light: #f9fbfe;
-            --text-main: #0a1124;
-            --text-muted: #627289;
-            --border-color: #ebf1fa;
-            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            --pill-blue-bg: #eff6ff;
-            --pill-blue-text: #2563eb;
-            --pill-gray-bg: #f1f5f9;
-            --pill-gray-text: #64748b;
+            --primary-blue: #0052cc;
+            --light-blue-bg: #f4f8ff;
+            --text-dark: #091e42;
+            --text-muted: #6b778c;
+            --border-light: #f1f3f5;
+            --badge-blue-bg: #e6f0ff;
+            --badge-blue-text: #0052cc;
+            --badge-gray-bg: #f4f5f7;
+            --badge-gray-text: #5e6c84;
+            --body-bg: #fafbfc;
         }
 
         * {
@@ -29,8 +28,8 @@
         }
 
         body {
-            background-color: var(--bg-light);
-            color: var(--text-main);
+            background-color: var(--body-bg);
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -39,591 +38,582 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Global Header Section --- */
-        .global-header {
+        /* --- Global Header Navigation --- */
+        .header {
             width: 100%;
             background: #ffffff;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #ebecf0;
             display: flex;
             justify-content: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
-        .header-container {
+        .header-inner {
             width: 100%;
             max-width: 1100px;
-            height: 75px;
+            height: 70px;
             padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .brand-logo {
+        .brand {
             display: flex;
             align-items: center;
             gap: 10px;
             font-weight: 700;
             font-size: 1.45rem;
-            color: var(--text-main);
-            text-decoration: none;
+            color: #091e42;
         }
 
-        .brand-logo img, .brand-logo i {
-            color: var(--brand-blue);
-            font-size: 1.65rem;
+        .brand-icon-wrapper {
+            background: var(--primary-blue);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .brand-logo span {
-            color: var(--brand-blue);
-            margin-left: -2px;
+        .brand-icon-wrapper i {
+            color: #ffffff;
+            font-size: 1.1rem;
         }
 
-        .profile-dropdown {
+        .brand span {
+            color: var(--primary-blue);
+            margin-left: 2px;
+        }
+
+        .user-profile {
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 0.95rem;
             font-weight: 600;
-            color: var(--text-main);
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: background 0.2s ease;
+            color: var(--text-dark);
         }
 
-        .profile-dropdown:hover {
-            background: #f4f8ff;
+        .user-profile i.fa-user-circle {
+            font-size: 1.7rem;
+            color: var(--primary-blue);
         }
 
-        .profile-dropdown i.fa-user-circle {
-            font-size: 1.65rem;
-            color: var(--brand-blue);
-        }
-
-        .profile-dropdown i.fa-chevron-down {
+        .user-profile i.fa-chevron-down {
             font-size: 0.75rem;
             color: var(--text-muted);
+            margin-left: 2px;
         }
 
-        /* --- Page Base Wrapper Layout --- */
-        .page-wrapper {
+        /* --- Page Content Wrapper --- */
+        .wrapper {
             width: 100%;
-            max-width: 820px;
-            padding: 32px 24px;
+            max-width: 1040px;
+            padding: 40px 24px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 32px;
         }
 
-        /* --- Stepper System Block --- */
-        .stepper-card {
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 18px 32px;
-            border: 1px solid var(--border-color);
+        /* --- 100% Visual Matching Progress Stepper Line --- */
+        .stepper-container {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--card-shadow);
+            position: relative;
+            padding: 0 20px;
         }
 
-        .step-item {
+        .stepper-line-back {
+            position: absolute;
+            top: 16px;
+            left: 50px;
+            right: 50px;
+            height: 1px;
+            background-color: #e3e6eb;
+            z-index: 1;
+        }
+
+        .step-node {
             display: flex;
             align-items: center;
-            gap: 10px;
-            position: relative;
+            gap: 12px;
+            background: var(--body-bg);
+            padding: 0 16px;
+            z-index: 2;
         }
 
-        .step-bubble {
-            width: 30px;
-            height: 30px;
+        .step-circle {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #f8fafc;
+            background: #ffffff;
             color: var(--text-muted);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid #dcdfe4;
+        }
+
+        /* Complete State style */
+        .step-node.completed .step-circle {
+            background: var(--primary-blue);
+            color: #ffffff;
+            border-color: var(--primary-blue);
+        }
+
+        /* Active State style */
+        .step-node.active .step-circle {
+            background: var(--primary-blue);
+            color: #ffffff;
+            border-color: var(--primary-blue);
         }
 
         .step-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             color: var(--text-muted);
         }
 
-        /* Active State Styles */
-        .step-item.active .step-bubble {
-            background: var(--brand-blue);
-            color: #ffffff;
-            border-color: var(--brand-blue);
+        .step-node.active .step-label {
+            color: var(--primary-blue);
+            font-weight: 700;
         }
 
-        .step-item.active .step-label {
-            color: var(--brand-blue);
-            font-weight: 600;
-        }
-
-        /* Completed State Styles */
-        .step-item.completed .step-bubble {
-            background: var(--brand-blue);
-            color: #ffffff;
-            border-color: var(--brand-blue);
-        }
-
-        /* Decorative connecting dividers */
-        .step-divider {
-            flex: 1;
-            height: 1px;
-            background-color: var(--border-color);
-            margin: 0 16px;
-        }
-
-        /* --- Primary Processing Card Window --- */
-        .workspace-window {
+        /* --- Core Extraction Centerpiece Card --- */
+        .workspace-card {
             background: #ffffff;
             border-radius: 20px;
-            padding: 54px 40px;
-            border: 1px solid var(--border-color);
+            padding: 64px 40px;
+            border: 1px solid #e3e6eb;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.015);
         }
 
-        /* Dynamic Floating Document Emblem */
-        .illustrative-icon-wrapper {
-            width: 84px;
-            height: 84px;
+        .file-icon-frame {
+            width: 96px;
+            height: 96px;
             border-radius: 50%;
-            background: #eff6ff;
-            color: var(--brand-blue);
+            background: #f0f5ff;
+            color: var(--primary-blue);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             position: relative;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
-        .illustrative-icon-wrapper .fa-sparkles {
+        .file-icon-frame .fa-sparkles {
             position: absolute;
-            bottom: 4px;
-            right: 4px;
-            font-size: 1.3rem;
-            color: var(--brand-blue);
-            background: #eff6ff;
-            padding: 3px;
+            bottom: 6px;
+            right: 6px;
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+            background: #f0f5ff;
+            padding: 4px;
             border-radius: 50%;
         }
 
-        .workspace-window h1 {
-            font-size: 1.85rem;
+        .workspace-card h1 {
+            font-size: 1.9rem;
             font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 12px;
+            color: var(--text-dark);
+            margin-bottom: 14px;
             letter-spacing: -0.5px;
+            text-align: center;
         }
 
-        .workspace-window p.subtitle {
-            font-size: 0.95rem;
+        .workspace-card p.instructions {
+            font-size: 1rem;
             color: var(--text-muted);
-            max-width: 500px;
+            max-width: 580px;
             line-height: 1.6;
-            margin-bottom: 36px;
+            text-align: center;
+            margin-bottom: 32px;
         }
 
-        /* Metrics Progress Engine CSS */
-        .progress-engine-group {
+        /* Meter Progress Load Track Container */
+        .progress-meter-stack {
             width: 100%;
-            max-width: 520px;
+            max-width: 560px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
             margin-bottom: 36px;
         }
 
-        .engine-track {
+        .meter-track {
             width: 100%;
-            height: 10px;
-            background: #f1f5f9;
+            height: 12px;
+            background: #eff1f4;
             border-radius: 99px;
             overflow: hidden;
         }
 
-        .engine-fill {
-            width: 65%; 
+        .meter-fill {
+            width: 65%;
             height: 100%;
-            background: var(--brand-blue);
+            background: var(--primary-blue);
             border-radius: 99px;
         }
 
-        .engine-percentage {
-            font-size: 1.4rem;
+        .counter-display {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--brand-blue);
+            color: var(--primary-blue);
         }
 
-        /* Status Pipeline Logs Card Box */
-        .status-pipeline-box {
+        /* Processing Logs Pipeline Status List Box */
+        .logs-pipeline-box {
             width: 100%;
-            max-width: 540px;
+            max-width: 560px;
             background: #f8fafc;
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            text-align: left;
-            border: 1px solid #f1f5f9;
+            border: 1px solid #f1f3f5;
             margin-bottom: 32px;
         }
 
-        .pipeline-row {
+        .log-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
         }
 
-        .pipeline-left-content {
+        .log-row-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
-        .pipeline-left-content i {
-            font-size: 1.15rem;
-            color: var(--brand-blue);
+        .log-row-left i {
+            font-size: 1.2rem;
+            color: var(--primary-blue);
         }
 
-        .pipeline-left-content i.fa-circle-notch {
-            animation: spinEngine 1.8s linear infinite;
+        .log-row-left i.fa-circle-notch {
+            animation: globalSpin 1.6s linear infinite;
         }
 
-        .pipeline-left-content i.fa-circle-dot {
+        .log-row-left i.fa-circle-dot {
             color: #cbd5e1;
         }
 
-        .pipeline-text-stack h3 {
-            font-size: 0.95rem;
+        .log-text-group h3 {
+            font-size: 0.98rem;
             font-weight: 600;
-            color: var(--text-main);
+            color: var(--text-dark);
         }
 
-        .pipeline-text-stack p {
-            font-size: 0.85rem;
+        .log-text-group p {
+            font-size: 0.88rem;
             color: var(--text-muted);
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
-        .status-pill {
-            padding: 4px 12px;
+        .status-badge {
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 600;
+            white-space: nowrap;
         }
 
-        .status-pill.in-progress {
-            background: var(--pill-blue-bg);
-            color: var(--pill-blue-text);
+        .status-badge.in-progress {
+            background: var(--badge-blue-bg);
+            color: var(--badge-blue-text);
         }
 
-        .status-pill.pending {
-            background: var(--pill-gray-bg);
-            color: var(--pill-gray-text);
+        .status-badge.pending {
+            background: var(--badge-gray-bg);
+            color: var(--badge-gray-text);
         }
 
-        .encryption-notice {
+        .security-footnote {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
             font-weight: 500;
         }
 
-        .encryption-notice i {
-            color: var(--brand-blue);
+        .security-footnote i {
+            color: var(--primary-blue);
         }
 
-        /* --- Footer Promotional / Action Banner Row --- */
-        .passport-footer-banner {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 24px 32px;
+        /* --- Footer Bottom Level Action Ribbon --- */
+        .passport-action-ribbon {
+            background: #e6f0ff;
+            border-radius: 20px;
+            padding: 28px 36px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 24px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
+            border: 1px solid #cce0ff;
         }
 
-        .passport-banner-left-side {
+        .ribbon-left-side {
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
-        .passport-shield-icon-frame {
-            width: 64px;
-            height: 64px;
+        .shield-icon-container {
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
-            background: #eff6ff;
-            border: 1px solid #dbeafe;
-            color: var(--brand-blue);
+            background: #ffffff;
+            border: 1px solid #b3d1ff;
+            color: var(--primary-blue);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             flex-shrink: 0;
         }
 
-        .passport-banner-text-block h2 {
-            font-size: 1.2rem;
+        .ribbon-text-stack h2 {
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--text-main);
+            color: var(--text-dark);
             margin-bottom: 4px;
             letter-spacing: -0.2px;
         }
 
-        .passport-banner-text-block p {
-            font-size: 0.88rem;
+        .ribbon-text-stack p {
+            font-size: 0.92rem;
             color: var(--text-muted);
             line-height: 1.5;
-            max-width: 460px;
+            max-width: 520px;
         }
 
-        .action-submit-button {
-            padding: 14px 28px;
-            background-color: var(--brand-blue);
+        .btn-action-primary {
+            padding: 16px 32px;
+            background-color: var(--primary-blue);
             color: #ffffff;
             border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border-radius: 10px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: all 0.15s ease;
+            gap: 12px;
+            transition: background 0.15s ease;
             white-space: nowrap;
         }
 
-        .action-submit-button:hover {
-            background-color: var(--brand-blue-hover);
-            transform: translateY(-1px);
+        .btn-action-primary:hover {
+            background-color: #0043a8;
         }
 
-        .action-submit-button:active {
-            transform: translateY(0);
-        }
-
-        .app-copyright-footer {
-            font-size: 0.8rem;
+        .global-footer-copyright {
+            font-size: 0.85rem;
             color: var(--text-muted);
             text-align: center;
             width: 100%;
             margin-top: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
 
-        /* --- Keyframes Animations Execution --- */
-        @keyframes spinEngine {
+        @keyframes globalSpin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
         /* ==========================================================================
-           CRITICAL RESPONSIVE MEDIA QUERIES (0% SIDE-SCROLLING INSURANCE)
+           RESPONSIVE CONFIGURATION: ZERO HORIZONTAL SCROLL GUARANTEE
            ========================================================================== */
-        @media (max-width: 768px) {
-            /* Stepper Collapse Engine */
-            .stepper-card {
-                padding: 16px;
-            }
+        @media (max-width: 890px) {
             .step-label {
-                display: none; /* Collapses text labels on smaller screens to keep items beautifully in-line */
+                display: none; /* Safely drops labels on tablets to protect screen container limits */
             }
-            .step-divider {
-                margin: 0 10px;
+            .stepper-line-back {
+                left: 30px;
+                right: 30px;
             }
-            
-            /* Workspace Adjustments */
-            .workspace-window {
-                padding: 40px 24px;
+        }
+
+        @media (max-width: 768px) {
+            .wrapper {
+                padding: 24px 16px;
+                gap: 24px;
             }
-            
-            /* Banner Multi-row Conversion */
-            .passport-footer-banner {
+            .workspace-card {
+                padding: 44px 20px;
+            }
+            .passport-action-ribbon {
                 flex-direction: column;
                 text-align: center;
-                padding: 24px 20px;
-                gap: 20px;
+                padding: 28px 20px;
+                gap: 24px;
             }
-            .passport-banner-left-side {
+            .ribbon-left-side {
                 flex-direction: column;
-                gap: 12px;
+                gap: 14px;
             }
-            .action-submit-button {
+            .btn-action-primary {
                 width: 100%;
                 justify-content: center;
             }
         }
 
         @media (max-width: 480px) {
-            .header-container {
+            .header-inner {
                 height: 65px;
                 padding: 0 16px;
             }
-            .brand-logo {
+            .brand {
                 font-size: 1.25rem;
             }
-            .page-wrapper {
-                padding: 16px;
-                gap: 16px;
+            .stepper-container {
+                padding: 0;
             }
-            .workspace-window {
-                padding: 32px 16px;
+            .step-node {
+                padding: 0 8px;
             }
-            .workspace-window h1 {
+            .workspace-card h1 {
                 font-size: 1.5rem;
             }
-            .status-pipeline-box {
+            .logs-pipeline-box {
                 padding: 16px;
-            }
-            .pipeline-left-content {
-                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
 
-    <header class="global-header">
-        <div class="header-container">
-            <a href="#" class="brand-logo">
-                <i class="fas fa-layer-group"></i> MyApply <span>SA</span>
-            </a>
-            <div class="profile-dropdown">
+    <header class="header">
+        <div class="header-inner">
+            <div class="brand">
+                <div class="brand-icon-wrapper"><i class="fas fa-layer-group"></i></div> MyApply <span>SA</span>
+            </div>
+            <div class="user-profile">
                 <i class="fas fa-user-circle"></i> Hi, Paul <i class="fas fa-chevron-down"></i>
             </div>
         </div>
     </header>
 
-    <div class="page-wrapper">
+    <div class="wrapper">
         
-        <nav class="stepper-card">
-            <div class="step-item completed">
-                <div class="step-bubble"><i class="fas fa-check" style="font-size: 0.75rem;"></i></div>
+        <nav class="stepper-container">
+            <div class="stepper-line-back"></div>
+            
+            <div class="step-node completed">
+                <div class="step-circle"><i class="fas fa-check" style="font-size: 0.8rem;"></i></div>
                 <div class="step-label">Upload Documents</div>
             </div>
-            <div class="step-divider"></div>
-            <div class="step-item active">
-                <div class="step-bubble">2</div>
+            
+            <div class="step-node active">
+                <div class="step-circle">2</div>
                 <div class="step-label">AI Extraction</div>
             </div>
-            <div class="step-divider"></div>
-            <div class="step-item">
-                <div class="step-bubble">3</div>
+            
+            <div class="step-node">
+                <div class="step-circle">3</div>
                 <div class="step-label">Review & Verify</div>
             </div>
-            <div class="step-divider"></div>
-            <div class="step-item">
-                <div class="step-bubble">4</div>
+            
+            <div class="step-node">
+                <div class="step-circle">4</div>
                 <div class="step-label">Your Passport</div>
             </div>
         </nav>
 
-        <main class="workspace-window">
+        <main class="workspace-card">
             
-            <div class="illustrative-icon-wrapper">
-                <i class="far fa-file-lines"></i>
+            <div class="file-icon-frame">
+                <i class="far fa-file-alt"></i>
                 <i class="fas fa-sparkles"></i>
             </div>
 
             <h1>Extracting Your Information</h1>
-            <p class="subtitle">Our AI is reading your documents and extracting the important details. This may take a few moments.</p>
+            <p class="instructions">Our AI is reading your documents and extracting the important details. This may take a few moments.</p>
 
-            <div class="progress-engine-group">
-                <div class="engine-track">
-                    <div class="engine-fill"></div>
+            <div class="progress-meter-stack">
+                <div class="meter-track">
+                    <div class="meter-fill"></div>
                 </div>
-                <div class="engine-percentage">65%</div>
+                <div class="counter-display">65%</div>
             </div>
 
-            <div class="status-pipeline-box">
+            <div class="logs-pipeline-box">
                 
-                <div class="pipeline-row">
-                    <div class="pipeline-left-content">
+                <div class="log-row">
+                    <div class="log-row-left">
                         <i class="fas fa-circle-notch"></i>
-                        <div class="pipeline-text-stack">
+                        <div class="log-text-group">
                             <h3>Reading your documents...</h3>
                             <p>ID Document</p>
                         </div>
                     </div>
-                    <span class="status-pill in-progress">In progress</span>
+                    <span class="status-badge in-progress">In progress</span>
                 </div>
 
-                <div class="pipeline-row">
-                    <div class="pipeline-left-content">
+                <div class="log-row">
+                    <div class="log-row-left">
                         <i class="far fa-circle-dot"></i>
-                        <div class="pipeline-text-stack">
+                        <div class="log-text-group">
                             <h3>Extracting personal details</h3>
                         </div>
                     </div>
-                    <span class="status-pill pending">Pending</span>
+                    <span class="status-badge pending">Pending</span>
                 </div>
 
-                <div class="pipeline-row">
-                    <div class="pipeline-left-content">
+                <div class="log-row">
+                    <div class="log-row-left">
                         <i class="far fa-circle-dot"></i>
-                        <div class="pipeline-text-stack">
+                        <div class="log-text-group">
                             <h3>Extracting academic information</h3>
                         </div>
                     </div>
-                    <span class="status-pill pending">Pending</span>
+                    <span class="status-badge pending">Pending</span>
                 </div>
 
-                <div class="pipeline-row">
-                    <div class="pipeline-left-content">
+                <div class="log-row">
+                    <div class="log-row-left">
                         <i class="far fa-circle-dot"></i>
-                        <div class="pipeline-text-stack">
+                        <div class="log-text-group">
                             <h3>Organizing your data</h3>
                         </div>
                     </div>
-                    <span class="status-pill pending">Pending</span>
+                    <span class="status-badge pending">Pending</span>
                 </div>
 
             </div>
 
-            <div class="encryption-notice">
-                <i class="fas fa-shield-halved"></i> Your data is secure and encrypted
+            <div class="security-footnote">
+                <i class="fas fa-lock"></i> Your data is secure and encrypted
             </div>
 
         </main>
 
-        <section class="passport-footer-banner">
-            <div class="passport-banner-left-side">
-                <div class="passport-shield-icon-frame"><i class="fas fa-graduation-cap"></i></div>
-                <div class="passport-banner-text-block">
+        <section class="passport-action-ribbon">
+            <div class="ribbon-left-side">
+                <div class="shield-icon-container"><i class="fas fa-shield-cat"></i></div>
+                <div class="ribbon-text-stack">
                     <h2>One passport. Many opportunities.</h2>
                     <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
                 </div>
             </div>
-            <button class="action-submit-button">Save & Continue <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-action-primary">Save & Continue <i class="fas fa-arrow-right"></i></button>
         </section>
 
-        <footer class="app-copyright-footer">
+        <footer class="global-footer-copyright">
             &copy; 2025 MyApply SA. All rights reserved.
         </footer>
 
