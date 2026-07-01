@@ -181,3 +181,4 @@ document.getElementById('resendPinBtn').addEventListener('click', async () => {
         console.error("Atlas Resend PIN Error:", e);
     }
 });
+
