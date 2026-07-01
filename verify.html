@@ -71,7 +71,7 @@
             color: var(--blue-primary);
         }
 
-        .navbar-brand img, .navbar-brand i {
+        .navbar-brand i {
             color: var(--blue-primary);
             font-size: 1.5rem;
         }
@@ -90,7 +90,7 @@
             color: var(--blue-primary);
         }
 
-        /* Central App Structure */
+        /* Central Container */
         .wrapper {
             width: 100%;
             max-width: 1000px;
@@ -100,7 +100,7 @@
             gap: 32px;
         }
 
-        /* Stepper Wizard Progress Engine */
+        /* Stepper Wizard Progress */
         .stepper-panel {
             background: #ffffff;
             border: 1px solid var(--border-gray);
@@ -167,7 +167,7 @@
             min-width: 20px;
         }
 
-        /* Core Section Heading Layout */
+        /* Heading Layout */
         .heading-container {
             display: flex;
             justify-content: space-between;
@@ -206,7 +206,7 @@
         .legend-node.found i { color: var(--green-success); }
         .legend-node.lost i { color: var(--red-danger); }
 
-        /* Document/Information Master Canvas Panel */
+        /* Master Canvas Dashboard Panel */
         .dashboard-card {
             background: #ffffff;
             border: 1px solid var(--border-gray);
@@ -250,7 +250,7 @@
             color: var(--text-main);
         }
 
-        /* Data Rows - Precise Columns with Defensive Wrap Protection */
+        /* Table Grid Configuration with Safety Wrap Inclusions */
         .data-row {
             display: grid;
             grid-template-columns: 2.5fr 3.5fr 0.5fr 0.8fr;
@@ -363,7 +363,7 @@
             white-space: nowrap;
         }
 
-        /* Large Bottom Callout Banner Block */
+        /* Action Footer Banner Component Layout */
         .action-banner {
             background: var(--blue-light);
             border: 1px solid #bfdbfe;
@@ -438,9 +438,7 @@
             margin-top: 8px;
         }
 
-        /* Zero-Bleed Layout Engine Breakpoints Matrix
-           Completely removes horizontal scrolling on ALL devices.
-        */
+        /* Responsive Viewport Grid Layout Refiner Rules */
         @media (max-width: 850px) {
             .stepper-panel {
                 overflow-x: auto;
@@ -466,7 +464,6 @@
                 padding: 24px 16px;
                 gap: 28px;
             }
-            /* Converts grid architecture securely to prevent narrow column overflow */
             .data-row {
                 grid-template-columns: 1fr auto;
                 gap: 6px 12px;
