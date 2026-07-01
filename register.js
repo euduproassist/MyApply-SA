@@ -203,3 +203,4 @@ document.getElementById('resendPinBtn').addEventListener('click', async () => {
         alert("Error resending PIN: " + error.message);
     }
 });
+
