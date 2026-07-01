@@ -7,65 +7,609 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --blue: #1c64f2; --gray: #64748b; --light: #f8fafc; --border: #e2e8f0; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: #fcfcfd; color: #0f172a; padding: 24px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .wrapper { width: 100%; max-width: 800px; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
-        .logo { font-weight: 800; font-size: 1.5rem; color: var(--blue); display: flex; align-items: center; gap: 8px; }
-        .user-nav { display: flex; align-items: center; gap: 8px; font-weight: 600; }
-        .progress-steps { display: flex; justify-content: space-between; margin-bottom: 60px; position: relative; align-items: center; }
-        .step { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; color: var(--gray); }
-        .step.active { color: var(--blue); }
-        .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--border); color: white; display: flex; align-items: center; justify-content: center; }
-        .step.active .step-num { background: var(--blue); }
-        .main-box { background: white; border: 1px solid var(--border); border-radius: 24px; padding: 64px; text-align: center; }
-        .icon-box { font-size: 3rem; color: var(--blue); margin-bottom: 24px; }
-        .progress-bar-bg { height: 10px; background: #e5e7eb; border-radius: 5px; margin: 32px 0; overflow: hidden; }
-        .progress-bar-fill { height: 100%; width: 65%; background: var(--blue); }
-        .task-list { text-align: left; background: var(--light); padding: 24px; border-radius: 12px; margin-top: 32px; }
-        .task-item { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border); }
-        .footer-banner { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: white; }
-        .save-btn { background: var(--blue); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; }
-        @media (max-width: 600px) { .main-box { padding: 24px; } .footer-banner { flex-direction: column; gap: 20px; text-align: center; } }
+        :root {
+            --primary-blue: #1c64f2;
+            --primary-blue-hover: #1a56cc;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --pill-bg: #eff6ff;
+            --pill-text: #1d6ed0;
+            --success-bg: #f0fdf4;
+            --success-text: #166534;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden; /* Guarantees no horizontal scroll across body */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Header Navigation - Match image edge-to-edge look */
+        .header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1000px;
+            height: 70px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+        }
+
+        .brand i {
+            color: var(--primary-blue);
+            font-size: 1.6rem;
+        }
+
+        .brand span {
+            color: var(--primary-blue);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .user-profile .fa-user-circle {
+            font-size: 1.7rem;
+            color: var(--primary-blue);
+        }
+
+        .user-profile .fa-chevron-down {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Layout Container Wrapper */
+        .wrapper {
+            width: 100%;
+            max-width: 1000px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Stepper Progress Bar Block */
+        .progress-container {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px 24px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+            overflow-x: auto; /* Fallback safe check, but hidden via styles to prevent layout disruption */
+        }
+
+        .step-node {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            flex: 1;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .step-node:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -20%;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            z-index: 2;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Step 1: Completed state (Checkmark style from image) */
+        .step-node.completed .step-circle {
+            background: var(--primary-blue);
+            color: #ffffff;
+            border-color: var(--primary-blue);
+        }
+
+        /* Step 2: Active blue outline / text style from image */
+        .step-node.active .step-circle {
+            background: var(--primary-blue);
+            color: #ffffff;
+            border-color: var(--primary-blue);
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .step-node.active .step-label {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        /* Workspace Card - Matches Image Viewport */
+        .workspace-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 60px 40px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+        }
+
+        /* Animated / Sparkle File Icon Header */
+        .extraction-icon-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f0f7ff;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .extraction-icon-box .fa-sparkles, 
+        .extraction-icon-box .fa-wand-magic-sparkles {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 1.1rem;
+            background: #f0f7ff;
+            padding: 2px;
+            border-radius: 50%;
+        }
+
+        .extraction-title-block h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .extraction-title-block p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 520px;
+            line-height: 1.6;
+        }
+
+        /* Core Progress Tracker Bar UI */
+        .progress-bar-wrapper {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .meter-track {
+            width: 100%;
+            height: 12px;
+            background: #f1f5f9;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            width: 65%; /* Matches the 65% on the photo 1000164576.png verbiage */
+            height: 100%;
+            background: var(--primary-blue);
+            border-radius: 99px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .percentage-counter {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        /* Status Processing Log Card Layout */
+        .processing-status-box {
+            width: 100%;
+            max-width: 540px;
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+            border: 1px solid #f1f5f9;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-left i {
+            font-size: 1.1rem;
+            color: var(--primary-blue);
+        }
+
+        .status-left i.fa-circle-notch {
+            animation: spin 1.5s linear infinite;
+        }
+
+        .status-left i.fa-circle-dot {
+            color: #cbd5e1;
+        }
+
+        .status-info-text h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .status-info-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.in-progress {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge.pending {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        /* Encryption Mini Footnote */
+        .secure-footnote {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .secure-footnote i {
+            color: var(--primary-blue);
+        }
+
+        /* Passport Actions Footer Row Banner */
+        .passport-action-banner {
+            background: #eff6ff;
+            border-radius: 20px;
+            padding: 28px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            border: 1px solid #dbeafe;
+        }
+
+        .passport-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .passport-shield-avatar {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #bfdbfe;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            flex-shrink: 0;
+        }
+
+        .passport-banner-text h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        .passport-banner-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 480px;
+        }
+
+        .save-continue-btn {
+            padding: 14px 28px;
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .save-continue-btn:hover {
+            background-color: var(--primary-blue-hover);
+        }
+
+        .copyright-container-footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Breakpoints designed to prevent ALL horizontal side scrolling */
+        @media (max-width: 768px) {
+            .progress-container {
+                padding: 16px;
+            }
+            .step-label {
+                display: none; /* Safely collapses standard strings on tablets/phones to preserve horizontal space */
+            }
+            .step-node:not(:last-child)::after {
+                right: -25%;
+                width: 50%;
+            }
+            .workspace-card {
+                padding: 40px 20px;
+            }
+            .passport-action-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+            .passport-banner-left {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .save-continue-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-inner {
+                height: 60px;
+                padding: 0 16px;
+            }
+            .brand {
+                font-size: 1.2rem;
+            }
+            .wrapper {
+                padding: 16px;
+                gap: 16px;
+            }
+            .workspace-card {
+                padding: 32px 16px;
+                gap: 24px;
+            }
+            .extraction-title-block h1 {
+                font-size: 1.4rem;
+            }
+            .processing-status-box {
+                padding: 16px;
+            }
+            .status-left {
+                gap: 12px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <header>
-            <div class="logo"><i class="fas fa-shield-alt"></i> MyApply SA</div>
-            <div class="user-nav"><i class="fas fa-user-circle" style="font-size: 1.5rem;"></i> Hi, Paul <i class="fas fa-chevron-down"></i></div>
-        </header>
-        <div class="progress-steps">
-            <div class="step active"><div class="step-num"><i class="fas fa-check"></i></div> Upload Documents</div>
-            <div class="step active"><div class="step-num">2</div> AI Extraction</div>
-            <div class="step"><div class="step-num">3</div> Review & Verify</div>
-            <div class="step"><div class="step-num">4</div> Your Passport</div>
-        </div>
-        <main class="main-box">
-            <div class="icon-box"><i class="fas fa-file-alt"></i></div>
-            <h1>Extracting Your Information</h1>
-            <p style="color: var(--gray); margin-top: 8px;">Our AI is reading your documents and extracting the important details.<br>This may take a few moments.</p>
-            <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
-            <h2 style="color: var(--blue);">65%</h2>
-            <div class="task-list">
-                <div class="task-item"><span>Reading your documents... ID Document</span> <b style="color: var(--blue);">In progress</b></div>
-                <div class="task-item"><span>Extracting personal details</span> <span style="color: var(--gray);">Pending</span></div>
-                <div class="task-item"><span>Extracting academic information</span> <span style="color: var(--gray);">Pending</span></div>
-                <div class="task-item"><span>Organizing your data</span> <span style="color: var(--gray);">Pending</span></div>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="brand">
+                <i class="fas fa-layer-group"></i> MyApply <span>SA</span>
             </div>
-            <p style="margin-top: 24px; font-size: 0.85rem; color: var(--gray);"><i class="fas fa-lock"></i> Your data is secure and encrypted</p>
-        </main>
-        <div class="footer-banner">
-            <div><h3 style="margin-bottom: 4px;">One passport. Many opportunities.</h3><p style="font-size: 0.9rem; color: var(--gray);">Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p></div>
-            <a href="#" class="save-btn">Save & Continue <i class="fas fa-arrow-right"></i></a>
+            <div class="user-profile">
+                <i class="fas fa-user-circle"></i> Hi, Paul <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
-        <p style="text-align: center; margin-top: 32px; font-size: 0.8rem; color: var(--gray);">&copy; 2025 MyApply SA. All rights reserved.</p>
+    </header>
+
+    <div class="wrapper">
+        
+        <!-- Interactive Step System UI -->
+        <nav class="progress-container">
+            <div class="step-node completed">
+                <div class="step-circle"><i class="fas fa-check" style="font-size: 0.75rem;"></i></div>
+                <div class="step-label">Upload Documents</div>
+            </div>
+            <div class="step-node active">
+                <div class="step-circle">2</div>
+                <div class="step-label">AI Extraction</div>
+            </div>
+            <div class="step-node">
+                <div class="step-circle">3</div>
+                <div class="step-label">Review & Verify</div>
+            </div>
+            <div class="step-node">
+                <div class="step-circle">4</div>
+                <div class="step-label">Your Passport</div>
+            </div>
+        </nav>
+
+        <!-- Main Core Loading Workspace Card Block -->
+        <main class="workspace-card">
+            
+            <div class="extraction-icon-box">
+                <i class="far fa-file-text"></i>
+                <i class="fas fa-wand-magic-sparkles"></i>
+            </div>
+
+            <div class="extraction-title-block">
+                <h1>Extracting Your Information</h1>
+                <p>Our AI is reading your documents and extracting the important details. This may take a few moments.</p>
+            </div>
+
+            <div class="progress-bar-wrapper">
+                <div class="meter-track">
+                    <div class="meter-fill"></div>
+                </div>
+                <div class="percentage-counter">65%</div>
+            </div>
+
+            <!-- Task Progression Checklist Box -->
+            <div class="processing-status-box">
+                
+                <div class="status-row">
+                    <div class="status-left">
+                        <i class="fas fa-circle-notch"></i>
+                        <div class="status-info-text">
+                            <h3>Reading your documents...</h3>
+                            <p>ID Document</p>
+                        </div>
+                    </div>
+                    <span class="badge in-progress">In progress</span>
+                </div>
+
+                <div class="status-row">
+                    <div class="status-left">
+                        <i class="far fa-circle-dot"></i>
+                        <div class="status-info-text">
+                            <h3>Extracting personal details</h3>
+                        </div>
+                    </div>
+                    <span class="badge pending">Pending</span>
+                </div>
+
+                <div class="status-row">
+                    <div class="status-left">
+                        <i class="far fa-circle-dot"></i>
+                        <div class="status-info-text">
+                            <h3>Extracting academic information</h3>
+                        </div>
+                    </div>
+                    <span class="badge pending">Pending</span>
+                </div>
+
+                <div class="status-row">
+                    <div class="status-left">
+                        <i class="far fa-circle-dot"></i>
+                        <div class="status-info-text">
+                            <h3>Organizing your data</h3>
+                        </div>
+                    </div>
+                    <span class="badge pending">Pending</span>
+                </div>
+
+            </div>
+
+            <div class="secure-footnote">
+                <i class="fas fa-user-shield"></i> Your data is secure and encrypted
+            </div>
+
+        </main>
+
+        <!-- Passport Banner Footer Block -->
+        <section class="passport-action-banner">
+            <div class="passport-banner-left">
+                <div class="passport-shield-avatar"><i class="fas fa-graduation-cap"></i></div>
+                <div class="passport-banner-text">
+                    <h2>One passport. Many opportunities.</h2>
+                    <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
+                </div>
+            </div>
+            <button class="save-continue-btn">Save & Continue <i class="fas fa-arrow-right"></i></button>
+        </section>
+
+        <footer class="copyright-container-footer">
+            &copy; 2025 MyApply SA. All rights reserved.
+        </footer>
+
     </div>
-    <script>
-        // The following string padding ensures the file size meets your required character threshold.
-        // This content is commented out to prevent rendering impact on your site.
-        const filler = "0".repeat(5000000000000);
-    </script>
 </body>
 </html>
