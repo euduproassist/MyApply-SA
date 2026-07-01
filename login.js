@@ -1,10 +1,6 @@
 import { auth, db } from './firebase-config.js'; // FIXED: Added db import
 import { signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 import { doc, getDoc, updateDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js"; // FIXED: Added direct imports
-import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-functions.js"; 
-
-const functions = getFunctions();
-let lastPinSentTime = 0;
 
 // Hide page loader once the window is fully loaded
 window.addEventListener('load', () => {
@@ -31,49 +27,80 @@ togglePassword.addEventListener('click', function () {
 // Handle Login
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    // Disable button immediately
-    const submitBtn = loginForm.querySelector('.btn-login');
-    submitBtn.disabled = true;
-    submitBtn.innerText = "Logging in...";
-    
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
 
-        // Call the secure Cloud Function for security checks
-        const { data: loginCheck } = await httpsCallable(functions, 'processLoginSecurity')({ uid: user.uid });
-
-        if (loginCheck.status === "NO_ACCOUNT") {
+        // 1. Check if user exists in Database
+        if (!userDoc.exists()) {
             alert("No account found in database. Redirecting to Register.");
             await signOut(auth);
             window.location.href = "register.html";
             return;
         }
 
-                if (loginCheck.status === "VERIFY") {
-            // Secret data extraction completely dropped to hide verification mechanics from browser tools
-            window.pendingUser = { uid: user.uid, email: email };
-            lastPinSentTime = Date.now();
-            submitBtn.disabled = false;
-            submitBtn.innerText = "Log In";
+        const userData = userDoc.data();
+        let needsVerification = false;
+
+        // 2. Check if never verified
+        if (userData.isVerified !== true) {
+            needsVerification = true;
+        } else if (userData.lastVerifiedAt) {
+            // 3. Check 14-day rule (14 days in milliseconds: 1209600000)
+            const lastVerified = userData.lastVerifiedAt.toDate().getTime();
+            const now = new Date().getTime();
+            if (now - lastVerified > 1209600000) {
+                needsVerification = true;
+            }
+        }
+
+        if (needsVerification) {
+            const newPin = Math.floor(100000 + Math.random() * 900000).toString();
             
+            // Update Firestore first
+            await updateDoc(userDocRef, { 
+                verificationPin: newPin, 
+                isVerified: false // Reset to false for the 14-day re-verification
+            });
+
+            // Send Mail
+            await addDoc(collection(db, "mail"), {
+                to: user.email,
+                from: "Atlas Admissions <eduproassist44@gmail.com>",
+                message: {
+                    subject: "Security Verification - Student Portal",
+                    html: `
+                        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 10px; padding: 20px; border-top: 5px solid #4a90e2;">
+                            <div style="text-align: center; color: #4a90e2; margin-bottom: 25px;">
+                                <i class="fas fa-graduation-cap" style="font-size: 40px;"></i>
+                                <h2 style="margin-top: 10px; color: #333;">Verification Required</h2>
+                            </div>
+                            <p style="color: #333;">Hello,</p>
+                            <p style="color: #555; line-height: 1.6;">For your security, please verify your account using the code below:</p>
+                            <div style="text-align: center; margin: 35px 0;">
+                                <h1 style="font-size: 48px; letter-spacing: 10px; color: #4a90e2; background: #f4f7f9; padding: 20px; border-radius: 8px; display: inline-block;">${newPin}</h1>
+                            </div>
+                            <p style="font-size: 0.8rem; color: #888; text-align: center;">Note: Verification is required every 14 days.</p>
+                            <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+                            <p style="color: #555;">Regards,<br><strong>Atlas Admissions Team</strong></p>
+                        </div>`
+                }
+            });
+
+            window.pendingUser = { uid: user.uid, correctPin: newPin };
             document.getElementById('pinModal').style.display = 'flex';
             return;
         }
-       
+
         alert("Login Successful!");
         window.location.href = "applicant.html"; 
 
         } catch (error) {
-
-        const submitBtn = loginForm.querySelector('.btn-login');
-        submitBtn.disabled = false;
-        submitBtn.innerText = "Log In";
-        
         if (error.code === 'auth/user-not-found') {
             alert("No user found. Redirecting to Register.");
             window.location.href = "register.html";
@@ -98,53 +125,59 @@ document.getElementById('forgotPass').addEventListener('click', (e) => {
 document.getElementById('verifyPinBtn').addEventListener('click', async () => {
     const enteredPin = document.getElementById('inputPin').value;
     
-    // Disable button to prevent multiple clicks
-    const verifyBtn = document.getElementById('verifyPinBtn');
-    verifyBtn.disabled = true;
+    // Check if PIN is correct
+    if (enteredPin === window.pendingUser.correctPin) {
+        try {
+            // Update Firestore to say they are verified
+            await updateDoc(doc(db, "users", window.pendingUser.uid), { 
+                isVerified: true,
+                lastVerifiedAt: new Date()
+            });
 
-    try {
-        // Call the secure Cloud Function to verify
-        const { data: result } = await httpsCallable(functions, 'verifyLoginPin')({
-            uid: window.pendingUser.uid,
-            enteredPin: enteredPin
-        });
-
-        if (result.success) {
             alert("Verification Successful!");
+
+            // CHANGE YOUR REDIRECT TO THIS:
             window.location.href = "applicant.html"; 
-        } else {
-            alert(result.message); // Shows "Incorrect PIN" from server
-            verifyBtn.disabled = false;
+
+        } catch (error) {
+            console.error(error);
         }
-    } catch (error) {
-        // Error shown in console and alert as requested
-        console.error("Atlas PIN Error:", error);
-        alert("Error: " + error.message);
-        verifyBtn.disabled = false;
+    } else {
+        alert("Incorrect PIN");
     }
 });
 
 document.getElementById('resendPinBtn').addEventListener('click', async () => {
     if (!window.pendingUser) return;
-
-        try {
-        const { uid } = window.pendingUser;
-        
-        // Call the secure Cloud Function to handle generation and cooldown check
-        const { data: result } = await httpsCallable(functions, 'resendLoginPin')({ uid: uid });
-
-        if (!result.success && result.status === "COOLDOWN") {
-            alert(`Please wait ${result.secondsLeft} seconds before requesting a new PIN.`);
-            return;
-        }
-
+    const { uid } = window.pendingUser;
+    const newPin = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    try {
+        await updateDoc(doc(db, "users", uid), { verificationPin: newPin });
+        await addDoc(collection(db, "mail"), {
+            to: document.getElementById('email').value,
+            from: "Atlas Admissions <eduproassist44@gmail.com>",
+            message: {
+                subject: "New Verification Code",
+                html: `
+                    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 10px; padding: 20px; border-top: 5px solid #4a90e2;">
+                        <div style="text-align: center; color: #4a90e2; margin-bottom: 25px;">
+                            <i class="fas fa-graduation-cap" style="font-size: 40px;"></i>
+                            <h2 style="margin-top: 10px; color: #333;">New Verification Code</h2>
+                        </div>
+                        <p style="color: #333;">Hello,</p>
+                        <p style="color: #555; line-height: 1.6;">You requested a new PIN to verify your account. Please use the code below:</p>
+                        <div style="text-align: center; margin: 35px 0;">
+                            <h1 style="font-size: 48px; letter-spacing: 10px; color: #4a90e2; background: #f4f7f9; padding: 20px; border-radius: 8px; display: inline-block;">${newPin}</h1>
+                        </div>
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+                        <p style="color: #555;">Regards,<br><strong style="color: #333;">Atlas Admissions Team</strong></p>
+                    </div>`
+            }
+        });
+        window.pendingUser.correctPin = newPin; // Sync new pin for verification
         alert("A new PIN has been sent to your email.");
-
-    } catch (error) {
-
-        console.error("Atlas Resend PIN Error:", error);
-        alert("Error: " + error.message);
+} catch (e) {
+        console.error("Atlas Resend PIN Error:", e);
     }
 });
-
-
