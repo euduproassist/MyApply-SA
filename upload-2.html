@@ -3,200 +3,558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyApply SA - Upload Your Documents</title>
+    <title>MyApply SA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS ARCHITECTURE:
-           This stylesheet is engineered to ensure 100% responsiveness 
-           across all device breakpoints, maintaining a strict vertical 
-           flow with zero horizontal overflow.
-        */
         :root {
             --primary-blue: #1c64f2;
-            --background: #f8fafc;
-            --card-white: #ffffff;
+            --primary-blue-hover: #1a56cc;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --light-bg: #f8fafc;
             --border-color: #e2e8f0;
-            --text-main: #0f172a;
-            --text-sub: #64748b;
+            --pill-bg: #eff6ff;
+            --pill-text: #1d6ed0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            margin: 0;
-            padding: 0;
+            background-color: #f8fafc;
+            color: var(--text-dark);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            overflow-x: hidden; /* Strict no horizontal scroll */
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
+        .header {
             width: 100%;
-            max-width: 900px;
-            padding: 40px 20px;
+            max-width: 1000px;
+            height: 70px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
         }
 
-        header {
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: var(--text-dark);
+        }
+
+        .brand i {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+
+        .brand span {
+            color: var(--primary-blue);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .user-profile i.fa-user-circle {
+            font-size: 1.6rem;
+            color: var(--primary-blue);
+        }
+
+        .user-profile i.fa-chevron-down {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .wrapper {
             width: 100%;
+            max-width: 1000px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Progress Steps */
+        .progress-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
         }
 
-        .brand { font-weight: 800; color: var(--text-main); font-size: 1.5rem; }
-        .brand span { color: var(--primary-blue); }
-
-        .profile-nav { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-
-        .stepper {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .step {
+        .step-node {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--text-sub);
+            position: relative;
+            flex: 1;
+            justify-content: center;
         }
 
-        .step.active { color: var(--text-main); }
-        .step-num { 
-            width: 32px; height: 32px; border-radius: 50%; 
-            background: var(--primary-blue); color: white;
-            display: flex; align-items: center; justify-content: center;
+        .step-node:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -15%;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background-color: var(--border-color);
+            z-index: 1;
         }
 
-        .upload-card {
-            background: var(--card-white);
-            border: 1px solid var(--border-color);
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .step-node.active .step-circle {
+            background: var(--primary-blue);
+            color: #ffffff;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .step-node.active .step-label {
+            color: var(--primary-blue);
+        }
+
+        /* Main Workspace Container */
+        .workspace-card {
+            background: #ffffff;
             border-radius: 16px;
             padding: 40px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-top: 30px;
-        }
-
-        .doc-box {
             border: 1px solid var(--border-color);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
         }
 
-        .btn-upload {
-            background: transparent;
+        .workspace-title-block h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .workspace-title-block p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Layout Document Grid Block */
+        .document-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .document-item-node {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: #ffffff;
+        }
+
+        .document-meta-header {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .document-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--pill-bg);
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .document-details-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .document-details-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .status-pill-badge {
+            background: var(--pill-bg);
+            color: var(--pill-text);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: fit-content;
+        }
+
+        .upload-trigger-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
             border: 1px solid var(--primary-blue);
             color: var(--primary-blue);
-            padding: 10px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .secure-banner {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f1f5f9;
-            border-radius: 8px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.15s ease;
         }
 
-        .final-row {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 20px;
+        .upload-trigger-btn:hover {
+            background: var(--pill-bg);
+        }
+
+        /* Encryption Shield Secure Information Row */
+        .encryption-security-row {
+            background: var(--pill-bg);
             border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
         }
 
-        .save-btn {
-            background: var(--primary-blue);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 8px;
-            border: none;
+        .security-left-side {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .security-left-side i {
+            font-size: 1.25rem;
+            color: var(--primary-blue);
+        }
+
+        .security-text-block h4 {
+            font-size: 0.9rem;
             font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 2px;
         }
 
-        /* REDUNDANT CHARACTER PADDING TO ENSURE >16000 CHARACTERS 
-           This section serves as a structural buffer to meet the requested 
-           character limit while maintaining valid CSS/HTML output. 
-           It does not affect the visual UI presented to the user.
-        */
-        .spacer-buffer-a { display: block; height: 1px; visibility: hidden; }
+        .security-text-block p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .security-learn-more-link {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Interactive Footer Application Passport Block */
+        .passport-action-banner {
+            background: var(--pill-bg);
+            border-radius: 16px;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .passport-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .passport-shield-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .passport-banner-text h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .passport-banner-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .save-continue-btn {
+            padding: 14px 28px;
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .save-continue-btn:hover {
+            background-color: var(--primary-blue-hover);
+        }
+
+        .copyright-container-footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        /* Fluid breakpoints matching responsive layout system specifications */
+        @media (max-width: 900px) {
+            .document-grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .progress-container {
+                padding: 16px;
+            }
+            .step-label {
+                display: none;
+            }
+            .step-node:not(:last-child)::after {
+                right: -25%;
+                width: 50%;
+            }
+            .workspace-card {
+                padding: 24px;
+            }
+            .passport-action-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+            .passport-banner-left {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .save-continue-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                height: 60px;
+                padding: 0 16px;
+            }
+            .wrapper {
+                padding: 16px;
+                gap: 16px;
+            }
+            .workspace-card {
+                padding: 20px 16px;
+                gap: 24px;
+            }
+            .workspace-title-block h1 {
+                font-size: 1.4rem;
+            }
+            .encryption-security-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .security-learn-more-link {
+                align-self: flex-end;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="brand">MyApply <span>SA</span></div>
-            <div class="profile-nav">Hi, Paul <i class="fas fa-chevron-down"></i></div>
-        </header>
-
-        <div class="stepper">
-            <div class="step active"><div class="step-num">1</div> Upload Documents</div>
-            <div class="step"><div class="step-num">2</div> AI Extraction</div>
-            <div class="step"><div class="step-num">3</div> Review & Verify</div>
-            <div class="step"><div class="step-num">4</div> Your Passport</div>
+    <header class="header">
+        <div class="brand">
+            <i class="fas fa-layer-group"></i> MyApply <span>SA</span>
         </div>
+        <div class="user-profile">
+            <i class="fas fa-user-circle"></i> Hi, Paul <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
 
-        <div class="upload-card">
-            <h1>Upload Your Documents</h1>
-            <p>These documents help us build your Academic Passport.</p>
+    <div class="wrapper">
+        
+        <nav class="progress-container">
+            <div class="step-node active">
+                <div class="step-circle">1</div>
+                <div class="step-label">Upload Documents</div>
+            </div>
+            <div class="step-node">
+                <div class="step-circle">2</div>
+                <div class="step-label">AI Extraction</div>
+            </div>
+            <div class="step-node">
+                <div class="step-circle">3</div>
+                <div class="step-label">Review & Verify</div>
+            </div>
+            <div class="step-node">
+                <div class="step-circle">4</div>
+                <div class="step-label">Your Passport</div>
+            </div>
+        </nav>
 
-            <div class="grid">
-                <div class="doc-box">
-                    <h3>ID Document</h3>
-                    <p>ID book, ID card, or Smart ID card</p>
-                    <button class="btn-upload">Upload</button>
-                </div>
-                <div class="doc-box">
-                    <h3>Matric Results</h3>
-                    <p>NSC statement of results</p>
-                    <button class="btn-upload">Upload</button>
-                </div>
-                <div class="doc-box">
-                    <h3>Proof of Residence</h3>
-                    <p>Utility bill, lease agreement or affidavit</p>
-                    <button class="btn-upload">Upload</button>
-                </div>
-                <div class="doc-box">
-                    <h3>Other Documents</h3>
-                    <p>Any other supporting documents</p>
-                    <button class="btn-upload">Upload</button>
-                </div>
+        <main class="workspace-card">
+            
+            <div class="workspace-title-block">
+                <h1>Upload Your Documents</h1>
+                <p>These documents help us build your Academic Passport.</p>
             </div>
 
-            <div class="secure-banner">
-                <div><strong>Your data is secure</strong><br>Your documents are encrypted and stored securely.</div>
-                <a href="#">Learn more ></a>
-            </div>
-        </div>
+            <div class="document-grid-layout">
+                
+                <div class="document-item-node">
+                    <div class="document-meta-header">
+                        <div class="document-icon-box"><i class="far fa-id-card"></i></div>
+                        <div class="document-details-info">
+                            <h3>ID Document</h3>
+                            <p>ID book, ID card, or Smart ID card</p>
+                            <div class="status-pill-badge">Not uploaded</div>
+                        </div>
+                    </div>
+                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                </div>
 
-        <div class="final-row">
-            <div>
-                <h3>One passport. Many opportunities.</h3>
-                <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
+                <div class="document-item-node">
+                    <div class="document-meta-header">
+                        <div class="document-icon-box"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="document-details-info">
+                            <h3>Matric Results</h3>
+                            <p>NSC statement of results</p>
+                            <div class="status-pill-badge">Not uploaded</div>
+                        </div>
+                    </div>
+                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                </div>
+
+                <div class="document-item-node">
+                    <div class="document-meta-header">
+                        <div class="document-icon-box"><i class="fas fa-home"></i></div>
+                        <div class="document-details-info">
+                            <h3>Proof of Residence</h3>
+                            <p>Utility bill, lease agreement or affidavit</p>
+                            <div class="status-pill-badge">Not uploaded</div>
+                        </div>
+                    </div>
+                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                </div>
+
+                <div class="document-item-node">
+                    <div class="document-meta-header">
+                        <div class="document-icon-box"><i class="far fa-file-alt"></i></div>
+                        <div class="document-details-info">
+                            <h3>Other Documents</h3>
+                            <p>Any other supporting documents</p>
+                            <div class="status-pill-badge">Not uploaded</div>
+                        </div>
+                    </div>
+                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                </div>
+
             </div>
-            <button class="save-btn">Save & Continue ></button>
-        </div>
+
+            <div class="encryption-security-row">
+                <div class="security-left-side">
+                    <i class="fas fa-lock"></i>
+                    <div class="security-text-block">
+                        <h4>Your data is secure</h4>
+                        <p>Your documents are encrypted and stored securely.</p>
+                    </div>
+                </div>
+                <a href="#" class="security-learn-more-link">Learn more <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+        </main>
+
+        <section class="passport-action-banner">
+            <div class="passport-banner-left">
+                <div class="passport-shield-avatar"><i class="fas fa-user-shield"></i></div>
+                <div class="passport-banner-text">
+                    <h2>One passport. Many opportunities.</h2>
+                    <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
+                </div>
+            </div>
+            <button class="save-continue-btn">Save & Continue <i class="fas fa-arrow-right"></i></button>
+        </section>
+
+        <footer class="copyright-container-footer">
+            &copy; 2025 MyApply SA. All rights reserved.
+        </footer>
+
     </div>
-
-    <div class="spacer-buffer-a">
-        </div>
 </body>
 </html>
