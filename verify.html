@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyApply SA - Review & Verify Your Information</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>MyApply SA - Review & Verify</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-blue: #1c64f2;
-            --primary-blue-hover: #1a56cc;
-            --text-dark: #0f172a;
+            --blue-primary: #0052cc;
+            --blue-hover: #0043a4;
+            --blue-light: #eff6ff;
+            --text-main: #0f172a;
             --text-muted: #64748b;
-            --light-bg: #f8fafc;
-            --border-color: #e2e8f0;
-            --success-green: #10b981;
-            --danger-red: #ef4444;
+            --bg-page: #f8fafc;
+            --border-gray: #e2e8f0;
+            --green-success: #10b981;
+            --red-danger: #ef4444;
         }
 
         * {
@@ -26,30 +27,30 @@
         }
 
         body {
-            background-color: #f8fafc;
-            color: var(--text-dark);
+            background-color: var(--bg-page);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden; /* Prevent any side-scrolling leaks */
+            overflow-x: hidden;
         }
 
-        /* Top Navbar */
-        .header {
+        /* Top Navbar Layout */
+        .navbar {
             width: 100%;
             background: #ffffff;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-gray);
             display: flex;
             justify-content: center;
-            padding: 16px 24px;
+            padding: 14px 24px;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
-        .header-container {
+        .navbar-content {
             width: 100%;
             max-width: 1000px;
             display: flex;
@@ -57,93 +58,73 @@
             justify-content: space-between;
         }
 
-        .brand {
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--text-main);
+        }
+
+        .navbar-brand span {
+            color: var(--blue-primary);
+        }
+
+        .navbar-brand img, .navbar-brand i {
+            color: var(--blue-primary);
+            font-size: 1.5rem;
+        }
+
+        .account-badge {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--text-dark);
-        }
-
-        .brand span {
-            color: var(--primary-blue);
-        }
-
-        .brand-icon {
-            background: var(--primary-blue);
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--light-bg);
-            padding: 6px 14px;
-            border-radius: 100px;
             cursor: pointer;
-            border: 1px solid var(--border-color);
-        }
-
-        .user-menu i.fa-user-circle {
-            font-size: 1.4rem;
-            color: var(--primary-blue);
-        }
-
-        .user-menu span {
-            font-size: 0.9rem;
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        /* Main Container Layout */
-        .main-container {
+        .account-badge i.fa-user-circle {
+            font-size: 1.6rem;
+            color: var(--blue-primary);
+        }
+
+        /* Central App Structure */
+        .wrapper {
             width: 100%;
             max-width: 1000px;
-            padding: 24px 16px 60px 16px;
+            padding: 32px 24px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 32px;
         }
 
-        /* Wizard Stepper Progress Bar */
-        .stepper-container {
+        /* Stepper Wizard Progress Engine */
+        .stepper-panel {
             background: #ffffff;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-gray);
             border-radius: 12px;
-            padding: 16px 24px;
+            padding: 20px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            overflow-x: auto; /* Fallback safe step scrolling if tiny screen */
-            -webkit-overflow-scrolling: touch;
+            gap: 12px;
         }
 
-        /* Hide horizontal scrollbar for stepper container on pure mobile */
-        .stepper-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .step-node {
+        .step-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             white-space: nowrap;
-            flex-shrink: 0;
         }
 
-        .step-circle {
-            width: 28px;
-            height: 28px;
+        .step-badge {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #e2e8f0;
+            background: #f1f5f9;
+            border: 1px solid var(--border-gray);
             color: var(--text-muted);
             font-size: 0.85rem;
             font-weight: 700;
@@ -152,269 +133,288 @@
             justify-content: center;
         }
 
-        .step-node.completed .step-circle {
-            background: var(--primary-blue);
-            color: white;
+        .step-item.done .step-badge {
+            background: var(--blue-primary);
+            border-color: var(--blue-primary);
+            color: #ffffff;
         }
 
-        .step-node.active .step-circle {
+        .step-item.current .step-badge {
             background: transparent;
-            border: 2px solid var(--primary-blue);
-            color: var(--primary-blue);
+            border: 2px solid var(--blue-primary);
+            color: var(--blue-primary);
         }
 
-        .step-label {
-            font-size: 0.88rem;
+        .step-text {
+            font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-muted);
         }
 
-        .step-node.completed .step-label, 
-        .step-node.active .step-label {
-            color: var(--primary-blue);
+        .step-item.current .step-text {
+            color: var(--blue-primary);
+            font-weight: 700;
         }
 
-        .step-line {
+        .step-item.done .step-text {
+            color: var(--text-main);
+        }
+
+        .step-divider {
             flex-grow: 1;
             height: 1px;
-            background: var(--border-color);
-            margin: 0 16px;
+            background: var(--border-gray);
             min-width: 20px;
         }
 
-        /* Section Block Header Content */
-        .view-title-block {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .view-title-row {
+        /* Core Section Heading Layout */
+        .heading-container {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .view-title-block h1 {
-            font-size: 1.6rem;
+        .heading-left h1 {
+            font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: -0.5px;
+            margin-bottom: 6px;
         }
 
-        .view-title-block p {
-            font-size: 0.92rem;
+        .heading-left p {
+            font-size: 0.95rem;
             color: var(--text-muted);
             font-weight: 500;
         }
 
-        .legend-container {
+        .legend-box {
             display: flex;
-            gap: 16px;
-            font-size: 0.82rem;
+            gap: 20px;
+            font-size: 0.85rem;
             font-weight: 600;
+            padding-top: 6px;
         }
 
-        .legend-item {
+        .legend-node {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .legend-item.extracted i { color: var(--success-green); }
-        .legend-item.missing i { color: var(--danger-red); }
+        .legend-node.found i { color: var(--green-success); }
+        .legend-node.lost i { color: var(--red-danger); }
 
-        /* Document/Information Core Card Layout */
-        .info-card {
+        /* Document/Information Master Canvas Panel */
+        .dashboard-card {
             background: #ffffff;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-gray);
             border-radius: 16px;
-            padding: 24px;
+            padding: 32px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            gap: 36px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.01);
         }
 
-        .info-group {
+        .data-block {
             display: flex;
             flex-direction: column;
-            gap: 16px;
         }
 
-        .group-header {
+        .block-header {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 12px;
+            padding-bottom: 14px;
+            margin-bottom: 8px;
         }
 
-        .group-icon {
+        .block-avatar {
             width: 36px;
             height: 36px;
-            background: #eff6ff;
-            color: var(--primary-blue);
+            background: #f0f7ff;
+            color: var(--blue-primary);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .group-header h2 {
             font-size: 1.05rem;
-            font-weight: 700;
         }
 
-        /* Field Item Row Layout with Zero Horizontal Bleed */
-        .field-row {
+        .block-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Data Rows - Precise Columns with Defensive Wrap Protection */
+        .data-row {
             display: grid;
-            grid-template-columns: 1.5fr 2fr 0.5fr 0.8fr;
+            grid-template-columns: 2.5fr 3.5fr 0.5fr 0.8fr;
             align-items: center;
             gap: 16px;
-            padding: 4px 0;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8fafc;
         }
 
-        .field-label {
-            font-size: 0.9rem;
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .cell-label {
+            font-size: 0.92rem;
             color: var(--text-muted);
             font-weight: 500;
         }
 
-        .field-value {
-            font-size: 0.9rem;
+        .cell-value {
+            font-size: 0.92rem;
             font-weight: 600;
-            color: var(--text-dark);
-            word-break: break-word; /* Security against wide layout breakage */
+            color: var(--text-main);
+            word-break: break-word;
+            padding-right: 8px;
         }
 
-        .status-indicator {
+        .cell-status {
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
 
-        .status-indicator.success { color: var(--success-green); }
-        .status-indicator.error { color: var(--danger-red); }
+        .cell-status.valid { color: var(--green-success); }
+        .cell-status.invalid { color: var(--red-danger); }
 
-        .edit-action-btn {
+        .btn-edit {
             background: #ffffff;
-            border: 1px solid var(--border-color);
-            color: var(--primary-blue);
+            border: 1px solid var(--border-gray);
+            color: var(--blue-primary);
             padding: 6px 16px;
             border-radius: 6px;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             text-align: center;
             transition: all 0.15s ease;
             width: 100%;
-            max-width: 80px;
+            max-width: 72px;
             justify-self: end;
         }
 
-        .edit-action-btn:hover {
-            background: var(--light-bg);
+        .btn-edit:hover {
+            background: var(--bg-page);
             border-color: #cbd5e1;
         }
 
-        /* Secure Notice Box */
-        .secure-notice-box {
-            background: #eff6ff;
+        /* Micro Security Block */
+        .crypto-notice-bar {
+            background: var(--blue-light);
             border: 1px solid #bfdbfe;
             border-radius: 12px;
-            padding: 16px;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
+            margin-top: 12px;
         }
 
-        .secure-left {
+        .crypto-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .secure-left i {
-            font-size: 1.4rem;
-            color: var(--primary-blue);
+        .crypto-left i {
+            font-size: 1.3rem;
+            color: var(--blue-primary);
         }
 
-        .secure-text h4 {
+        .crypto-details {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .crypto-details h4 {
             font-size: 0.9rem;
             font-weight: 700;
-            color: #1e3a8a;
+            color: var(--text-main);
         }
 
-        .secure-text p {
-            font-size: 0.82rem;
-            color: #1d4ed8;
+        .crypto-details p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
             font-weight: 500;
-            margin-top: 2px;
         }
 
-        .learn-more-link {
-            font-size: 0.85rem;
+        .link-info {
+            font-size: 0.88rem;
             font-weight: 700;
-            color: var(--primary-blue);
+            color: var(--blue-primary);
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             white-space: nowrap;
         }
 
-        /* Large Action Callout Section Block */
-        .bottom-action-banner {
-            background: #eff6ff;
+        /* Large Bottom Callout Banner Block */
+        .action-banner {
+            background: var(--blue-light);
             border: 1px solid #bfdbfe;
             border-radius: 16px;
-            padding: 24px 32px;
+            padding: 28px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
+            gap: 32px;
         }
 
-        .banner-left-meta {
+        .banner-info {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 20px;
         }
 
-        .banner-icon-shield {
-            width: 52px;
-            height: 52px;
+        .banner-icon-container {
+            width: 56px;
+            height: 56px;
             background: #ffffff;
-            border: 2px solid var(--primary-blue);
-            border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
-            color: var(--primary-blue);
+            border: 1px solid #bfdbfe;
+            border-radius: 50%;
+            color: var(--blue-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
 
-        .banner-text-block h3 {
-            font-size: 1.15rem;
+        .banner-copy h3 {
+            font-size: 1.2rem;
             font-weight: 800;
-            color: var(--text-dark);
+            color: var(--text-main);
+            margin-bottom: 4px;
         }
 
-        .banner-text-block p {
-            font-size: 0.88rem;
+        .banner-copy p {
+            font-size: 0.9rem;
             color: var(--text-muted);
             font-weight: 500;
-            margin-top: 2px;
+            line-height: 1.4;
         }
 
-        .submit-primary-btn {
-            background: var(--primary-blue);
+        .btn-submit-master {
+            background: var(--blue-primary);
             color: #ffffff;
             border: none;
-            padding: 14px 28px;
+            padding: 14px 32px;
             border-radius: 8px;
             font-size: 0.95rem;
             font-weight: 700;
@@ -426,311 +426,345 @@
             white-space: nowrap;
         }
 
-        .submit-primary-btn:hover {
-            background: var(--primary-blue-hover);
+        .btn-submit-master:hover {
+            background: var(--blue-hover);
         }
 
-        .footer-copyright {
+        .copyright-tag {
             text-align: center;
             font-size: 0.8rem;
             color: var(--text-muted);
-            margin-top: 16px;
             font-weight: 500;
+            margin-top: 8px;
         }
 
-        /* Fully Responsive System Layout Framework - Breakpoints Matrix */
+        /* Zero-Bleed Layout Engine Breakpoints Matrix
+           Completely removes horizontal scrolling on ALL devices.
+        */
+        @media (max-width: 850px) {
+            .stepper-panel {
+                overflow-x: auto;
+                padding: 16px 20px;
+            }
+            .stepper-panel::-webkit-scrollbar {
+                display: none;
+            }
+            .step-item {
+                flex-shrink: 0;
+            }
+            .step-divider {
+                min-width: 24px;
+            }
+        }
+
         @media (max-width: 768px) {
-            .view-title-row {
+            .wrapper {
+                padding: 16px 12px;
+                gap: 24px;
+            }
+            .dashboard-card {
+                padding: 24px 16px;
+                gap: 28px;
+            }
+            /* Converts grid architecture securely to prevent narrow column overflow */
+            .data-row {
+                grid-template-columns: 1fr auto;
+                gap: 6px 12px;
+                padding: 14px 0;
+                border-bottom: 1px dashed var(--border-gray);
+            }
+            .cell-label {
+                grid-column: 1 / span 2;
+                font-size: 0.88rem;
+            }
+            .cell-value {
+                grid-column: 1;
+                grid-row: 2;
+                text-align: left;
+                padding-right: 0;
+            }
+            .cell-status {
+                grid-column: 2;
+                grid-row: 2;
+                justify-content: flex-end;
+            }
+            .btn-edit {
+                grid-column: 1 / span 2;
+                grid-row: 3;
+                max-width: 100%;
+                margin-top: 6px;
+                padding: 8px;
+            }
+            .crypto-notice-bar {
                 flex-direction: column;
                 align-items: flex-start;
+                padding: 16px;
             }
-
-            .field-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px 8px;
-                border-bottom: 1px dashed #f1f5f9;
-                padding-bottom: 12px;
+            .crypto-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
             }
-
-            .field-row:last-child {
-                border-bottom: none;
-                padding-bottom: 0;
+            .link-info {
+                align-self: flex-end;
+                margin-top: 4px;
             }
-
-            .field-value {
-                text-align: right;
-            }
-
-            .status-indicator {
-                justify-content: flex-start;
-                grid-row: 2;
-            }
-
-            .edit-action-btn {
-                grid-row: 2;
-            }
-
-            .bottom-action-banner {
+            .action-banner {
                 flex-direction: column;
                 text-align: center;
-                padding: 24px;
+                padding: 24px 16px;
+                gap: 24px;
             }
-
-            .banner-left-meta {
+            .banner-info {
                 flex-direction: column;
                 gap: 12px;
             }
-
-            .submit-primary-btn {
+            .btn-submit-master {
                 width: 100%;
                 justify-content: center;
             }
         }
 
         @media (max-width: 480px) {
-            .header-container {
-                padding: 0;
+            .step-text {
+                display: none;
             }
-            .info-card {
-                padding: 16px;
+            .step-item.current .step-text {
+                display: inline-block;
+                font-size: 0.8rem;
             }
-            .secure-notice-box {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .learn-more-link {
-                align-self: flex-end;
+            .heading-left h1 {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-container">
-            <div class="brand">
-                <div class="brand-icon"><i class="fas fa-layer-group"></i></div>
-                MyApply <span>SA</span>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <i class="fas fa-layer-group"></i> MyApply <span>SA</span>
             </div>
-            <div class="user-menu">
+            <div class="account-badge">
                 <i class="fas fa-user-circle"></i>
                 <span>Hi, Paul</span>
-                <i class="fas fa-chevron-down" style="font-size: 0.75rem; color: var(--text-muted);"></i>
+                <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="main-container">
+    <main class="wrapper">
 
-        <div class="stepper-container">
-            <div class="step-node completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
-                <div class="step-label">Upload Documents</div>
+        <div class="stepper-panel">
+            <div class="step-item done">
+                <div class="step-badge"><i class="fas fa-check"></i></div>
+                <div class="step-text">Upload Documents</div>
             </div>
-            <div class="step-line"></div>
-            <div class="step-node completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
-                <div class="step-label">AI Extraction</div>
+            <div class="step-divider"></div>
+            <div class="step-item done">
+                <div class="step-badge"><i class="fas fa-check"></i></div>
+                <div class="step-text">AI Extraction</div>
             </div>
-            <div class="step-line"></div>
-            <div class="step-node active">
-                <div class="step-circle">3</div>
-                <div class="step-label">Review & Verify</div>
+            <div class="step-divider"></div>
+            <div class="step-item current">
+                <div class="step-badge">3</div>
+                <div class="step-text">Review & Verify</div>
             </div>
-            <div class="step-line"></div>
-            <div class="step-node">
-                <div class="step-circle">4</div>
-                <div class="step-label">Your Passport</div>
+            <div class="step-divider"></div>
+            <div class="step-item">
+                <div class="step-badge">4</div>
+                <div class="step-text">Your Passport</div>
             </div>
         </div>
 
-        <div class="view-title-block">
-            <div class="view-title-row">
+        <div class="heading-container">
+            <div class="heading-left">
                 <h1>Review & Verify Your Information</h1>
-                <div class="legend-container">
-                    <div class="legend-item extracted"><i class="fas fa-check-circle"></i> Extracted</div>
-                    <div class="legend-item missing"><i class="fas fa-times-circle"></i> Missing</div>
-                </div>
+                <p>Please review the extracted information and make any necessary corrections.</p>
             </div>
-            <p>Please review the extracted information and make any necessary corrections.</p>
+            <div class="legend-box">
+                <div class="legend-node found"><i class="fas fa-check-circle"></i> Extracted</div>
+                <div class="legend-node lost"><i class="fas fa-times-circle"></i> Missing</div>
+            </div>
         </div>
 
-        <div class="info-card">
+        <div class="dashboard-card">
             
-            <div class="info-group">
-                <div class="group-header">
-                    <div class="group-icon"><i class="far fa-user"></i></div>
+            <div class="data-block">
+                <div class="block-header">
+                    <div class="block-avatar"><i class="far fa-user"></i></div>
                     <h2>Personal Details</h2>
                 </div>
                 
-                <div class="field-row">
-                    <span class="field-label">Full Name</span>
-                    <span class="field-value">Paul</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Full Name</span>
+                    <span class="cell-value">Paul</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Identity Number</span>
-                    <span class="field-value">************</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Identity Number</span>
+                    <span class="cell-value">************</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Date of Birth</span>
-                    <span class="field-value">12 May 2006</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Date of Birth</span>
+                    <span class="cell-value">12 May 2006</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Email Address</span>
-                    <span class="field-value">paul@example.com</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Email Address</span>
+                    <span class="cell-value">paul@example.com</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Phone Number</span>
-                    <span class="field-value">067 123 4567</span>
-                    <div class="status-indicator error"><i class="fas fa-times-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Phone Number</span>
+                    <span class="cell-value">067 123 4567</span>
+                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
             </div>
 
-            <div class="info-group">
-                <div class="group-header">
-                    <div class="group-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div class="data-block">
+                <div class="block-header">
+                    <div class="block-avatar"><i class="fas fa-graduation-cap"></i></div>
                     <h2>School Information</h2>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">School Name</span>
-                    <span class="field-value">ABC High School</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">School Name</span>
+                    <span class="cell-value">ABC High School</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Province</span>
-                    <span class="field-value">Gauteng</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Province</span>
+                    <span class="cell-value">Gauteng</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Year Completed</span>
-                    <span class="field-value">2023</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Year Completed</span>
+                    <span class="cell-value">2023</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
             </div>
 
-            <div class="info-group">
-                <div class="group-header">
-                    <div class="group-icon"><i class="far fa-file-alt"></i></div>
+            <div class="data-block">
+                <div class="block-header">
+                    <div class="block-avatar"><i class="far fa-file-alt"></i></div>
                     <h2>Subjects & Marks</h2>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Mathematics</span>
-                    <span class="field-value">85%</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Mathematics</span>
+                    <span class="cell-value">85%</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">English</span>
-                    <span class="field-value">78%</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">English</span>
+                    <span class="cell-value">78%</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Physical Sciences</span>
-                    <span class="field-value">--</span>
-                    <div class="status-indicator error"><i class="fas fa-times-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Physical Sciences</span>
+                    <span class="cell-value">--</span>
+                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Life Sciences</span>
-                    <span class="field-value">--</span>
-                    <div class="status-indicator error"><i class="fas fa-times-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Life Sciences</span>
+                    <span class="cell-value">--</span>
+                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">APS (Estimated)</span>
-                    <span class="field-value">--</span>
-                    <div class="status-indicator error"><i class="fas fa-times-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">APS (Estimated)</span>
+                    <span class="cell-value">--</span>
+                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
             </div>
 
-            <div class="info-group">
-                <div class="group-header">
-                    <div class="group-icon"><i class="fas fa-shield-alt"></i></div>
+            <div class="data-block">
+                <div class="block-header">
+                    <div class="block-avatar"><i class="fas fa-shield-alt"></i></div>
                     <h2>Documents Summary</h2>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">ID Document</span>
-                    <span class="field-value">Extracted successfully</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">ID Document</span>
+                    <span class="cell-value">Extracted successfully</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Matric Results</span>
-                    <span class="field-value">Extracted successfully</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Matric Results</span>
+                    <span class="cell-value">Extracted successfully</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Proof of Residence</span>
-                    <span class="field-value">Extracted successfully</span>
-                    <div class="status-indicator success"><i class="fas fa-check-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Proof of Residence</span>
+                    <span class="cell-value">Extracted successfully</span>
+                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
 
-                <div class="field-row">
-                    <span class="field-label">Other Documents</span>
-                    <span class="field-value" style="color: var(--text-muted); font-weight: 500;">No document uploaded</span>
-                    <div class="status-indicator error"><i class="fas fa-times-circle"></i></div>
-                    <button class="edit-action-btn">Edit</button>
+                <div class="data-row">
+                    <span class="cell-label">Other Documents</span>
+                    <span class="cell-value" style="color: var(--text-muted); font-weight: 500;">No document uploaded</span>
+                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
+                    <button class="btn-edit">Edit</button>
                 </div>
             </div>
 
-            <div class="secure-notice-box">
-                <div class="secure-left">
+            <div class="crypto-notice-bar">
+                <div class="crypto-left">
                     <i class="fas fa-lock"></i>
-                    <div class="secure-text">
+                    <div class="crypto-details">
                         <h4>Your data is secure</h4>
                         <p>Your documents are encrypted and stored securely.</p>
                     </div>
                 </div>
-                <a href="#" class="learn-more-link">Learn more <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i></a>
+                <a href="#" class="link-info">Learn more <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i></a>
             </div>
 
         </div>
 
-        <div class="bottom-action-banner">
-            <div class="banner-left-meta">
-                <div class="banner-icon-shield">
+        <div class="action-banner">
+            <div class="banner-info">
+                <div class="banner-icon-container">
                     <i class="fas fa-graduation-cap"></i>
                 </div>
-                <div class="banner-text-block">
+                <div class="banner-copy">
                     <h3>One passport. Many opportunities.</h3>
                     <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
                 </div>
             </div>
-            <button class="submit-primary-btn">Save & Continue <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-submit-master">Save & Continue <i class="fas fa-arrow-right"></i></button>
         </div>
 
-        <div class="footer-copyright">
+        <div class="copyright-tag">
             &copy; 2026 MyApply SA. All rights reserved.
         </div>
 
