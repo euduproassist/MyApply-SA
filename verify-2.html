@@ -2,73 +2,127 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes">
     <title>MyApply SA - Review & Verify Your Information</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Modern System Variable Configurations Matrix */
+        /* ==========================================================================
+           GLOBAL DESIGN INTENT MASTER DESIGN TOKENS (EXHAUSTIVE VARIABLE CANVAS)
+           ========================================================================== */
         :root {
+            /* Branding & Corporate Color Profiles */
             --brand-blue: #0052cc;
             --brand-blue-hover: #0043a4;
+            --brand-blue-active: #00317a;
             --brand-blue-light: #eff6ff;
             --brand-blue-border: #bfdbfe;
+            --brand-blue-focus: rgba(0, 82, 204, 0.18);
+            
+            /* Text Hierarchy Semantic Color Matrix */
             --color-text-main: #0f172a;
             --color-text-muted: #64748b;
             --color-text-light: #94a3b8;
+            --color-text-white: #ffffff;
+            
+            /* Workspace Architectural Surfaces */
             --color-bg-workspace: #f8fafc;
+            --color-bg-card: #ffffff;
+            --color-bg-hover: #fafafa;
+            --color-bg-alt-row: #f8fafc;
+            
+            /* Micro Structural Borders & Separators */
             --color-border-clean: #e2e8f0;
             --color-border-card: #e2e8f0;
+            --color-border-dashed: #cbd5e1;
+            
+            /* State Machine Informational Colors */
             --ui-green-success: #10b981;
+            --ui-green-light: #ecfdf5;
+            --ui-green-border: #a7f3d0;
             --ui-red-danger: #ef4444;
-            --font-stack-inter: 'Inter', sans-serif;
-            --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --ui-red-light: #fef2f2;
+            --ui-red-border: #fca5a5;
+            
+            /* Typography Scale & Hierarchy Elements */
+            --font-stack-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* Kinematics & Interaction Micro-Transitions */
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-snappy: all 0.15s cubic-bezier(0, 0, 0.2, 1);
+            
+            /* Ambient Deep Elevation Layer Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.02), 0 4px 6px -2px rgba(15, 23, 42, 0.01);
+            --shadow-brand: 0 4px 14px rgba(0, 82, 204, 0.18);
+            
+            /* Global Surface Boundary Radii Matrix */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-round: 50%;
+            --radius-pill: 100px;
         }
 
-        /* Anti-Horizontal Bleed Core Structural Settings */
-        * {
+        /* ==========================================================================
+           HARD ARCHITECTURAL RECONCILIATION & ANTI-HORIZONTAL SCROLL SAFETIES
+           ========================================================================== */
+        *, *::before, *::after {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-stack-inter);
-        }
-
-        html, body {
-            width: 100%;
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden !important; /* Strict multi-layered lock against sideways displacement */
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100%;
+            font-size: 16px;
+            scroll-behavior: smooth;
+            background-color: var(--color-bg-workspace);
+            overflow-x: hidden !important;
         }
 
         body {
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
             background-color: var(--color-bg-workspace);
             color: var(--color-text-main);
-            min-height: 100vh;
+            font-family: var(--font-stack-inter);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
             display: flex;
             flex-direction: column;
             align-items: center;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            justify-content: flex-start;
+            overflow-x: hidden !important;
             overflow-y: auto;
+            position: relative;
         }
 
-        /* Main Workspace Navigation Container Layer */
+        /* ==========================================================================
+           TOP MAIN SYSTEM NAVIGATION LAYOUT BLOCK 
+           ========================================================================== */
         header.app-navigation-bar {
             width: 100%;
-            background: #ffffff;
+            background: var(--color-bg-card);
             border-bottom: 1px solid var(--color-border-clean);
             display: flex;
             justify-content: center;
+            align-items: center;
             padding: 0 24px;
             position: sticky;
             top: 0;
             z-index: 1000;
             height: 72px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            box-shadow: var(--shadow-sm);
         }
 
         .navigation-container {
@@ -77,6 +131,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 16px;
         }
 
         .navigation-brand-identity {
@@ -89,11 +144,12 @@
             letter-spacing: -0.5px;
             cursor: pointer;
             user-select: none;
+            text-decoration: none;
         }
 
         .navigation-brand-identity .brand-logo-graphics {
             background: var(--brand-blue);
-            color: #ffffff;
+            color: var(--color-text-white);
             width: 36px;
             height: 36px;
             border-radius: 10px;
@@ -101,7 +157,13 @@
             align-items: center;
             justify-content: center;
             font-size: 1.15rem;
-            box-shadow: 0 2px 8px rgba(0, 82, 204, 0.2);
+            box-shadow: var(--shadow-brand);
+            transition: var(--transition-smooth);
+        }
+
+        .navigation-brand-identity:hover .brand-logo-graphics {
+            background: var(--brand-blue-hover);
+            transform: scale(1.02);
         }
 
         .navigation-brand-identity span {
@@ -116,20 +178,23 @@
             font-weight: 600;
             font-size: 0.95rem;
             padding: 8px 16px;
-            border-radius: 24px;
+            border-radius: var(--radius-pill);
             background: transparent;
             transition: var(--transition-smooth);
             user-select: none;
+            border: 1px solid transparent;
         }
 
         .user-profile-badge-menu:hover {
             background: var(--brand-blue-light);
             color: var(--brand-blue);
+            border-color: var(--brand-blue-border);
         }
 
         .user-profile-badge-menu i.fa-user-circle {
             font-size: 1.85rem;
             color: var(--brand-blue);
+            transition: var(--transition-smooth);
         }
 
         .user-profile-badge-menu i.fa-chevron-down {
@@ -144,7 +209,9 @@
             transform: translateY(1px);
         }
 
-        /* Centralized Component Content Blueprint Block Layout */
+        /* ==========================================================================
+           CENTRAL WORKSPACE CONTAINER MANAGEMENT FRAME
+           ========================================================================== */
         .workspace-wrapper {
             width: 100%;
             max-width: 1000px;
@@ -155,17 +222,20 @@
             box-sizing: border-box;
         }
 
-        /* Stepper Pipeline Infrastructure Component Rules */
+        /* ==========================================================================
+           STEP WIZARD WORKFLOW PIPELINE COMPONENT DESIGN
+           ========================================================================== */
         .wizard-pipeline-card {
-            background: #ffffff;
+            background: var(--color-bg-card);
             border: 1px solid var(--color-border-card);
-            border-radius: 100px;
+            border-radius: var(--radius-pill);
             padding: 16px 36px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.01);
+            box-shadow: var(--shadow-sm);
+            user-select: none;
         }
 
         .pipeline-node {
@@ -176,9 +246,9 @@
         }
 
         .pipeline-badge-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-round);
             background: #f1f5f9;
             border: 1px solid var(--color-border-clean);
             color: var(--color-text-muted);
@@ -194,11 +264,11 @@
         .pipeline-node.status-done .pipeline-badge-circle {
             background: var(--brand-blue);
             border-color: var(--brand-blue);
-            color: #ffffff;
+            color: var(--color-text-white);
         }
 
         .pipeline-node.status-active .pipeline-badge-circle {
-            background: #ffffff;
+            background: var(--color-bg-card);
             border: 2px solid var(--brand-blue);
             color: var(--brand-blue);
             font-weight: 800;
@@ -210,6 +280,7 @@
             font-weight: 600;
             color: var(--color-text-muted);
             letter-spacing: -0.1px;
+            transition: var(--transition-smooth);
         }
 
         .pipeline-node.status-active .pipeline-label-text {
@@ -227,9 +298,12 @@
             background: var(--color-border-clean);
             min-width: 20px;
             border-radius: 2px;
+            transition: var(--transition-smooth);
         }
 
-        /* View Dynamic Informational Headers Row Layout */
+        /* ==========================================================================
+           INTRODUCTORY TITLE HEADER MATRIX BLOCK
+           ========================================================================== */
         .view-introductory-header-block {
             display: flex;
             justify-content: space-between;
@@ -238,18 +312,25 @@
             gap: 20px;
         }
 
+        .introductory-title-meta {
+            flex: 1;
+            min-width: 280px;
+        }
+
         .introductory-title-meta h1 {
             font-size: 1.95rem;
             font-weight: 800;
             color: var(--color-text-main);
             letter-spacing: -0.75px;
             margin-bottom: 8px;
+            line-height: 1.25;
         }
 
         .introductory-title-meta p {
             font-size: 1.05rem;
             color: var(--color-text-muted);
             font-weight: 500;
+            line-height: 1.45;
         }
 
         .status-legend-matrix {
@@ -258,28 +339,30 @@
             font-size: 0.9rem;
             font-weight: 600;
             padding-bottom: 4px;
+            user-select: none;
         }
 
         .legend-matrix-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            user-select: none;
         }
 
         .legend-matrix-item.type-extracted { color: var(--ui-green-success); }
         .legend-matrix-item.type-missing { color: var(--ui-red-danger); }
 
-        /* Unified Grid Module Display Dashboard Elements Sheet */
+        /* ==========================================================================
+           UNIFIED CENTRAL CANVAS DASHBOARD LAYER 
+           ========================================================================== */
         .workspace-dashboard-canvas {
-            background: #ffffff;
+            background: var(--color-bg-card);
             border: 1px solid var(--color-border-card);
-            border-radius: 16px;
+            border-radius: var(--radius-xl);
             padding: 40px;
             display: flex;
             flex-direction: column;
             gap: 44px;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
+            box-shadow: var(--shadow-lg);
         }
 
         .canvas-data-segment {
@@ -294,6 +377,7 @@
             border-bottom: 1px solid #f1f5f9;
             padding-bottom: 16px;
             margin-bottom: 8px;
+            user-select: none;
         }
 
         .segment-headline-icon-wrapper {
@@ -316,7 +400,9 @@
             letter-spacing: -0.2px;
         }
 
-        /* Highly Guarded Rigid Grid System For Matrix Alignment */
+        /* ==========================================================================
+           RIGID COMPONENT GRID ENGINE FOR ABSOLUTE AXIS ALIGNMENT
+           ========================================================================== */
         .matrix-row-entry {
             display: grid;
             grid-template-columns: 2.5fr 3.5fr 0.6fr 0.8fr;
@@ -332,10 +418,12 @@
         }
 
         .matrix-row-entry:hover {
-            background-color: #fafafa;
-            padding-left: 4px;
-            padding-right: 4px;
-            border-radius: 6px;
+            background-color: var(--color-bg-hover);
+            padding-left: 8px;
+            padding-right: 8px;
+            margin-left: -8px;
+            margin-right: -8px;
+            border-radius: var(--radius-md);
         }
 
         .entry-data-label {
@@ -357,17 +445,18 @@
             justify-content: center;
             align-items: center;
             font-size: 1.25rem;
+            user-select: none;
         }
 
         .entry-status-node.state-valid { color: var(--ui-green-success); }
         .entry-status-node.state-missing { color: var(--ui-red-danger); }
 
         .entry-action-trigger-btn {
-            background: #ffffff;
+            background: var(--color-bg-card);
             border: 1px solid var(--color-border-clean);
             color: var(--brand-blue);
             padding: 8px 18px;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             font-size: 0.88rem;
             font-weight: 600;
             cursor: pointer;
@@ -377,6 +466,7 @@
             max-width: 80px;
             justify-self: end;
             outline: none;
+            user-select: none;
         }
 
         .entry-action-trigger-btn:hover {
@@ -385,17 +475,25 @@
             color: var(--brand-blue-hover);
         }
 
-        /* Cryptographic Enterprise Security Assurance Block Components */
+        .entry-action-trigger-btn:focus-visible {
+            box-shadow: 0 0 0 3px var(--brand-blue-focus);
+            border-color: var(--brand-blue);
+        }
+
+        /* ==========================================================================
+           ENTERPRISE DATA CRYPTOGRAPHIC SECURITY BLOCK COMPONENT
+           ========================================================================== */
         .workspace-security-guarantee-bar {
             background: var(--brand-blue-light);
             border: 1px solid var(--brand-blue-border);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             padding: 20px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 20px;
             margin-top: 16px;
+            user-select: none;
         }
 
         .security-guarantee-left {
@@ -445,17 +543,19 @@
             transform: translateX(2px);
         }
 
-        /* Core High Conversion Global Action Banner Control Engine */
+        /* ==========================================================================
+           HIGH LEVEL CONVERSION BANNER CORE INTERACTION ENGINE
+           ========================================================================== */
         .master-conversion-banner {
             background: var(--brand-blue-light);
             border: 1px solid var(--brand-blue-border);
-            border-radius: 16px;
+            border-radius: var(--radius-xl);
             padding: 36px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 32px;
-            box-shadow: 0 4px 18px rgba(0, 82, 204, 0.03);
+            box-shadow: var(--shadow-md);
         }
 
         .conversion-banner-details {
@@ -467,16 +567,16 @@
         .conversion-banner-icon-frame {
             width: 64px;
             height: 64px;
-            background: #ffffff;
+            background: var(--color-text-white);
             border: 1px solid var(--brand-blue-border);
-            border-radius: 50%;
+            border-radius: var(--radius-round);
             color: var(--brand-blue);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.65rem;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.06);
+            box-shadow: var(--shadow-sm);
         }
 
         .conversion-banner-text-strings h3 {
@@ -496,7 +596,7 @@
 
         .master-submit-action-trigger {
             background: var(--brand-blue);
-            color: #ffffff;
+            color: var(--color-text-white);
             border: none;
             padding: 18px 40px;
             border-radius: 10px;
@@ -508,18 +608,20 @@
             gap: 12px;
             transition: var(--transition-smooth);
             white-space: nowrap;
-            box-shadow: 0 4px 14px rgba(0, 82, 204, 0.2);
+            box-shadow: var(--shadow-brand);
             outline: none;
+            user-select: none;
         }
 
         .master-submit-action-trigger:hover {
             background: var(--brand-blue-hover);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 82, 204, 0.25);
         }
 
         .master-submit-action-trigger:active {
-            transform: scale(0.98);
+            transform: translateY(0);
+            background: var(--brand-blue-active);
         }
 
         .master-submit-action-trigger i {
@@ -530,6 +632,9 @@
             transform: translateX(4px);
         }
 
+        /* ==========================================================================
+           SYSTEM COHESIVE SYSTEM PERSISTENT ARCHIVAL FOOTER SYSTEM
+           ========================================================================== */
         footer.system-copyright-container {
             text-align: center;
             font-size: 0.88rem;
@@ -539,11 +644,13 @@
             user-select: none;
         }
 
-        /* Multi-Tier Comprehensive Device Real Estate Breakpoint Layout Engines */
+        /* ==========================================================================
+           DYNAMIC MEDIATED BREAKPOINTS RESIZING LAYOUT ENGINE (0% SIDEWAYS BLEED)
+           ========================================================================== */
         @media (max-width: 920px) {
             .wizard-pipeline-card {
                 padding: 16px 24px;
-                border-radius: 16px;
+                border-radius: var(--radius-xl);
             }
             .pipeline-label-text {
                 font-size: 0.85rem;
@@ -555,10 +662,10 @@
                 padding: 24px 16px 60px 16px;
                 gap: 28px;
             }
-            /* Fluid Transformation Matrix for Stepper Components to completely eliminate sideways overflow */
+            
+            /* Fluid Linear Structural Transformation Matrix for Stepper Pipeline Component */
             .wizard-pipeline-card {
-                background: #ffffff;
-                border-radius: 14px;
+                border-radius: var(--radius-lg);
                 padding: 20px 16px;
                 display: flex;
                 flex-direction: row;
@@ -566,7 +673,7 @@
                 gap: 8px;
             }
             .pipeline-label-text {
-                display: none; /* Safely hides passive textual layout on tablets */
+                display: none; /* Dynamic layout clipping for mid-tier tablets */
             }
             .pipeline-node.status-active .pipeline-label-text {
                 display: block;
@@ -579,11 +686,13 @@
                 min-width: 12px;
                 margin: 0 2px;
             }
+            
             .workspace-dashboard-canvas {
                 padding: 28px 20px;
                 gap: 36px;
             }
-            /* Rigid Grid to Fluid Linear Layer transformation safeguard */
+            
+            /* Desktop Multi-column Grid Axis safely remapped into Fluid Rows Matrix */
             .matrix-row-entry {
                 grid-template-columns: 1fr auto;
                 gap: 8px 16px;
@@ -594,6 +703,8 @@
                 background-color: transparent;
                 padding-left: 0;
                 padding-right: 0;
+                margin-left: 0;
+                margin-right: 0;
             }
             .entry-data-label {
                 grid-column: 1 / span 2;
@@ -618,12 +729,13 @@
                 padding: 10px;
                 font-size: 0.92rem;
             }
+            
             .workspace-security-guarantee-bar {
                 flex-direction: column;
                 align-items: flex-start;
                 padding: 20px;
                 gap: 16px;
-                border-radius: 12px;
+                border-radius: var(--radius-lg);
             }
             .security-guarantee-copywriting {
                 flex-direction: column;
@@ -634,12 +746,13 @@
                 align-self: flex-end;
                 padding-top: 4px;
             }
+            
             .master-conversion-banner {
                 flex-direction: column;
                 text-align: center;
                 padding: 36px 24px;
                 gap: 32px;
-                border-radius: 16px;
+                border-radius: var(--radius-xl);
             }
             .conversion-banner-details {
                 flex-direction: column;
@@ -666,7 +779,8 @@
                 gap: 16px;
                 font-size: 0.85rem;
             }
-            /* Clean Minimal Display Engine for Micro Viewports */
+            
+            /* High Reliability Adaptive UI Engine for Micro Mobile viewports down to 320px */
             .wizard-pipeline-card {
                 padding: 16px 12px;
                 gap: 4px;
@@ -683,10 +797,11 @@
                 height: 28px;
                 font-size: 0.82rem;
             }
+            
             .workspace-dashboard-canvas {
                 padding: 20px 14px;
                 gap: 32px;
-                border-radius: 12px;
+                border-radius: var(--radius-lg);
             }
             .segment-headline-header {
                 gap: 12px;
@@ -708,6 +823,7 @@
             .entry-data-value {
                 font-size: 0.92rem;
             }
+            
             .workspace-security-guarantee-bar {
                 padding: 16px 12px;
             }
@@ -723,13 +839,14 @@
             }
         }
         
-        /* Ultra Protection Configuration for Minimal Target Screens down to 320px */
+        /* Ultra High Density Micro Layout Compactor Safety Guardrail (320px screen widths) */
         @media (max-width: 360px) {
             .pipeline-node.status-active .pipeline-label-text {
-                display: none; /* Complete layout compression to fully block accidental scroll triggers */
+                display: none; /* Structural collapse mechanism to block horizontal overflow entirely */
             }
             .wizard-pipeline-card {
                 justify-content: space-around;
+                padding: 12px 6px;
             }
             .pipeline-vector-divider {
                 display: none;
@@ -741,12 +858,12 @@
 
     <header class="app-navigation-bar">
         <div class="navigation-container">
-            <div class="navigation-brand-identity">
+            <a href="#" class="navigation-brand-identity">
                 <div class="brand-logo-graphics">
                     <i class="fas fa-layer-group"></i>
                 </div>
                 MyApply <span>SA</span>
-            </div>
+            </a>
             <div class="user-profile-badge-menu">
                 <i class="fas fa-user-circle"></i>
                 <span>Hi, Paul</span>
