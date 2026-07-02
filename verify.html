@@ -3,54 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>MyApply SA - Review & Verify</title>
+    <title>MyApply SA - Review & Verify Your Information</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Modern System Variable Configurations */
         :root {
-            --blue-primary: #0052cc;
-            --blue-hover: #0043a4;
-            --blue-light: #eff6ff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --bg-page: #f8fafc;
-            --border-gray: #e2e8f0;
-            --green-success: #10b981;
-            --red-danger: #ef4444;
+            --brand-blue: #0052cc;
+            --brand-blue-hover: #0043a4;
+            --brand-blue-light: #eff6ff;
+            --brand-blue-border: #bfdbfe;
+            --color-text-main: #0f172a;
+            --color-text-muted: #64748b;
+            --color-text-light: #94a3b8;
+            --color-bg-workspace: #f8fafc;
+            --color-border-clean: #e2e8f0;
+            --color-border-card: #e2e8f0;
+            --ui-green-success: #10b981;
+            --ui-red-danger: #ef4444;
+            --font-stack-inter: 'Inter', sans-serif;
         }
 
+        /* Deep System Modern Reset Rules */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-stack-inter);
         }
 
         body {
-            background-color: var(--bg-page);
-            color: var(--text-main);
+            background-color: var(--color-bg-workspace);
+            color: var(--color-text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden; /* Hard block against unintended horizontal shifting */
+            overflow-y: auto;
         }
 
-        /* Top Navbar Layout */
-        .navbar {
+        /* Top Sticky Header Layer Layout */
+        header.app-navigation-bar {
             width: 100%;
             background: #ffffff;
-            border-bottom: 1px solid var(--border-gray);
+            border-bottom: 1px solid var(--color-border-clean);
             display: flex;
             justify-content: center;
-            padding: 14px 24px;
+            padding: 0 24px;
             position: sticky;
             top: 0;
             z-index: 1000;
+            height: 72px;
         }
 
-        .navbar-content {
+        .navigation-container {
             width: 100%;
             max-width: 1000px;
             display: flex;
@@ -58,712 +67,771 @@
             justify-content: space-between;
         }
 
-        .navbar-brand {
+        .navigation-brand-identity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--color-text-main);
+            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .navigation-brand-identity .brand-logo-graphics {
+            background: var(--brand-blue);
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(0, 82, 204, 0.2);
+        }
+
+        .navigation-brand-identity span {
+            color: var(--brand-blue);
+        }
+
+        .user-profile-badge-menu {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--text-main);
-        }
-
-        .navbar-brand span {
-            color: var(--blue-primary);
-        }
-
-        .navbar-brand i {
-            color: var(--blue-primary);
-            font-size: 1.5rem;
-        }
-
-        .account-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: background 0.2s ease;
         }
 
-        .account-badge i.fa-user-circle {
-            font-size: 1.6rem;
-            color: var(--blue-primary);
+        .user-profile-badge-menu:hover {
+            background: var(--color-bg-workspace);
         }
 
-        /* Central Container */
-        .wrapper {
+        .user-profile-badge-menu i.fa-user-circle {
+            font-size: 1.75rem;
+            color: var(--brand-blue);
+        }
+
+        .user-profile-badge-menu i.fa-chevron-down {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin-left: 2px;
+        }
+
+        /* Centralized Component Core Wrapper */
+        .workspace-wrapper {
             width: 100%;
             max-width: 1000px;
-            padding: 32px 24px;
+            padding: 40px 24px 80px 24px;
             display: flex;
             flex-direction: column;
             gap: 32px;
         }
 
-        /* Stepper Wizard Progress */
-        .stepper-panel {
+        /* Step Wizard Pipeline Component Rules */
+        .wizard-pipeline-card {
             background: #ffffff;
-            border: 1px solid var(--border-gray);
+            border: 1px solid var(--color-border-card);
             border-radius: 12px;
-            padding: 20px 32px;
+            padding: 24px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .step-item {
+        .pipeline-node {
             display: flex;
             align-items: center;
             gap: 12px;
             white-space: nowrap;
         }
 
-        .step-badge {
-            width: 32px;
-            height: 32px;
+        .pipeline-badge-circle {
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: #f1f5f9;
-            border: 1px solid var(--border-gray);
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            border: 1px solid var(--color-border-clean);
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s ease;
         }
 
-        .step-item.done .step-badge {
-            background: var(--blue-primary);
-            border-color: var(--blue-primary);
+        .pipeline-node.status-done .pipeline-badge-circle {
+            background: var(--brand-blue);
+            border-color: var(--brand-blue);
             color: #ffffff;
         }
 
-        .step-item.current .step-badge {
+        .pipeline-node.status-active .pipeline-badge-circle {
             background: transparent;
-            border: 2px solid var(--blue-primary);
-            color: var(--blue-primary);
+            border: 2px solid var(--brand-blue);
+            color: var(--brand-blue);
+            font-weight: 800;
         }
 
-        .step-text {
-            font-size: 0.9rem;
+        .pipeline-label-text {
+            font-size: 0.92rem;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--color-text-muted);
         }
 
-        .step-item.current .step-text {
-            color: var(--blue-primary);
+        .pipeline-node.status-active .pipeline-label-text {
+            color: var(--brand-blue);
             font-weight: 700;
         }
 
-        .step-item.done .step-text {
-            color: var(--text-main);
+        .pipeline-node.status-done .pipeline-label-text {
+            color: var(--color-text-main);
         }
 
-        .step-divider {
+        .pipeline-vector-divider {
             flex-grow: 1;
             height: 1px;
-            background: var(--border-gray);
-            min-width: 20px;
+            background: var(--color-border-clean);
+            min-width: 24px;
         }
 
-        /* Heading Layout */
-        .heading-container {
+        /* Meta Content Row Header Elements Layout */
+        .view-introductory-header-block {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: flex-end;
             flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .heading-left h1 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
-        }
-
-        .heading-left p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .legend-box {
-            display: flex;
             gap: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding-top: 6px;
         }
 
-        .legend-node {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legend-node.found i { color: var(--green-success); }
-        .legend-node.lost i { color: var(--red-danger); }
-
-        /* Master Canvas Dashboard Panel */
-        .dashboard-card {
-            background: #ffffff;
-            border: 1px solid var(--border-gray);
-            border-radius: 16px;
-            padding: 32px;
-            display: flex;
-            flex-direction: column;
-            gap: 36px;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.01);
-        }
-
-        .data-block {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .block-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 14px;
+        .introductory-title-meta h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--color-text-main);
+            letter-spacing: -0.75px;
             margin-bottom: 8px;
         }
 
-        .block-avatar {
-            width: 36px;
-            height: 36px;
-            background: #f0f7ff;
-            color: var(--blue-primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.05rem;
-        }
-
-        .block-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        /* Table Grid Configuration with Safety Wrap Inclusions */
-        .data-row {
-            display: grid;
-            grid-template-columns: 2.5fr 3.5fr 0.5fr 0.8fr;
-            align-items: center;
-            gap: 16px;
-            padding: 12px 0;
-            border-bottom: 1px solid #f8fafc;
-        }
-
-        .data-row:last-child {
-            border-bottom: none;
-        }
-
-        .cell-label {
-            font-size: 0.92rem;
-            color: var(--text-muted);
+        .introductory-title-meta p {
+            font-size: 1rem;
+            color: var(--color-text-muted);
             font-weight: 500;
         }
 
-        .cell-value {
-            font-size: 0.92rem;
+        .status-legend-matrix {
+            display: flex;
+            gap: 24px;
+            font-size: 0.88rem;
             font-weight: 600;
-            color: var(--text-main);
-            word-break: break-word;
-            padding-right: 8px;
+            padding-bottom: 4px;
         }
 
-        .cell-status {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.15rem;
-        }
-
-        .cell-status.valid { color: var(--green-success); }
-        .cell-status.invalid { color: var(--red-danger); }
-
-        .btn-edit {
-            background: #ffffff;
-            border: 1px solid var(--border-gray);
-            color: var(--blue-primary);
-            padding: 6px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.15s ease;
-            width: 100%;
-            max-width: 72px;
-            justify-self: end;
-        }
-
-        .btn-edit:hover {
-            background: var(--bg-page);
-            border-color: #cbd5e1;
-        }
-
-        /* Micro Security Block */
-        .crypto-notice-bar {
-            background: var(--blue-light);
-            border: 1px solid #bfdbfe;
-            border-radius: 12px;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-top: 12px;
-        }
-
-        .crypto-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .crypto-left i {
-            font-size: 1.3rem;
-            color: var(--blue-primary);
-        }
-
-        .crypto-details {
+        .legend-matrix-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            flex-wrap: wrap;
         }
 
-        .crypto-details h4 {
-            font-size: 0.9rem;
+        .legend-matrix-item.type-extracted { color: var(--ui-green-success); }
+        .legend-matrix-item.type-missing { color: var(--ui-red-danger); }
+
+        /* Unified Document Matrix Core Board Card */
+        .workspace-dashboard-canvas {
+            background: #ffffff;
+            border: 1px solid var(--color-border-card);
+            border-radius: 16px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .canvas-data-segment {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .segment-headline-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 16px;
+            margin-bottom: 12px;
+        }
+
+        .segment-headline-icon-wrapper {
+            width: 38px;
+            height: 38px;
+            background: #f0f7ff;
+            color: var(--brand-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .segment-headline-header h2 {
+            font-size: 1.15rem;
             font-weight: 700;
-            color: var(--text-main);
+            color: var(--color-text-main);
+            letter-spacing: -0.2px;
         }
 
-        .crypto-details p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        /* Strict Table Sheet Grid Matrices */
+        .matrix-row-entry {
+            display: grid;
+            grid-template-columns: 2.5fr 3.5fr 0.6fr 0.8fr;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .matrix-row-entry:last-child {
+            border-bottom: none;
+        }
+
+        .entry-data-label {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
             font-weight: 500;
         }
 
-        .link-info {
+        .entry-data-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-text-main);
+            word-break: break-word;
+            padding-right: 12px;
+        }
+
+        .entry-status-node {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .entry-status-node.state-valid { color: var(--ui-green-success); }
+        .entry-status-node.state-missing { color: var(--ui-red-danger); }
+
+        .entry-action-trigger-btn {
+            background: #ffffff;
+            border: 1px solid var(--color-border-clean);
+            color: var(--brand-blue);
+            padding: 7px 18px;
+            border-radius: 6px;
             font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 76px;
+            justify-self: end;
+        }
+
+        .entry-action-trigger-btn:hover {
+            background: var(--color-bg-workspace);
+            border-color: #cbd5e1;
+            color: var(--brand-blue-hover);
+        }
+
+        /* Cryptographic Security Infobar Block Component */
+        .workspace-security-guarantee-bar {
+            background: var(--brand-blue-light);
+            border: 1px solid var(--brand-blue-border);
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .security-guarantee-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .security-guarantee-left i {
+            font-size: 1.35rem;
+            color: var(--brand-blue);
+        }
+
+        .security-guarantee-copywriting {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .security-guarantee-copywriting h4 {
+            font-size: 0.95rem;
             font-weight: 700;
-            color: var(--blue-primary);
+            color: var(--color-text-main);
+        }
+
+        .security-guarantee-copywriting p {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+
+        .security-guarantee-anchor-link {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--brand-blue);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             white-space: nowrap;
+            transition: color 0.2s ease;
         }
 
-        /* Action Footer Banner Component Layout */
-        .action-banner {
-            background: var(--blue-light);
-            border: 1px solid #bfdbfe;
+        .security-guarantee-anchor-link:hover {
+            color: var(--brand-blue-hover);
+        }
+
+        /* Bottom Call-To-Action Master Panel Layout */
+        .master-conversion-banner {
+            background: var(--brand-blue-light);
+            border: 1px solid var(--brand-blue-border);
             border-radius: 16px;
-            padding: 28px 32px;
+            padding: 32px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 32px;
         }
 
-        .banner-info {
+        .conversion-banner-details {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
-        .banner-icon-container {
-            width: 56px;
-            height: 56px;
+        .conversion-banner-icon-frame {
+            width: 60px;
+            height: 60px;
             background: #ffffff;
-            border: 1px solid #bfdbfe;
+            border: 1px solid var(--brand-blue-border);
             border-radius: 50%;
-            color: var(--blue-primary);
+            color: var(--brand-blue);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 14px rgba(0, 82, 204, 0.05);
         }
 
-        .banner-copy h3 {
-            font-size: 1.2rem;
+        .conversion-banner-text-strings h3 {
+            font-size: 1.3rem;
             font-weight: 800;
-            color: var(--text-main);
+            color: var(--color-text-main);
             margin-bottom: 4px;
+            letter-spacing: -0.25px;
         }
 
-        .banner-copy p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        .conversion-banner-text-strings p {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
             font-weight: 500;
-            line-height: 1.4;
+            line-height: 1.45;
         }
 
-        .btn-submit-master {
-            background: var(--blue-primary);
+        .master-submit-action-trigger {
+            background: var(--brand-blue);
             color: #ffffff;
             border: none;
-            padding: 14px 32px;
+            padding: 16px 36px;
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            transition: background 0.15s ease;
+            gap: 12px;
+            transition: background 0.15s ease, transform 0.1s ease;
             white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.15);
         }
 
-        .btn-submit-master:hover {
-            background: var(--blue-hover);
+        .master-submit-action-trigger:hover {
+            background: var(--brand-blue-hover);
         }
 
-        .copyright-tag {
+        .master-submit-action-trigger:active {
+            transform: scale(0.98);
+        }
+
+        footer.system-copyright-container {
             text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            font-size: 0.85rem;
+            color: var(--color-text-light);
             font-weight: 500;
-            margin-top: 8px;
+            margin-top: -8px;
         }
 
         /* Responsive Viewport Grid Layout Refiner Rules */
-        @media (max-width: 850px) {
-            .stepper-panel {
-                overflow-x: auto;
-                padding: 16px 20px;
+        @media (max-width: 900px) {
+            .wizard-pipeline-card {
+                padding: 20px 24px;
             }
-            .stepper-panel::-webkit-scrollbar {
-                display: none;
-            }
-            .step-item {
-                flex-shrink: 0;
-            }
-            .step-divider {
-                min-width: 24px;
+            .pipeline-label-text {
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 768px) {
-            .wrapper {
-                padding: 16px 12px;
+            .workspace-wrapper {
+                padding: 20px 16px 60px 16px;
                 gap: 24px;
             }
-            .dashboard-card {
-                padding: 24px 16px;
-                gap: 28px;
+            .wizard-pipeline-card {
+                overflow-x: auto;
+                border-radius: 12px;
+                padding: 16px;
+                -webkit-overflow-scrolling: touch;
             }
-            .data-row {
+            .wizard-pipeline-card::-webkit-scrollbar {
+                display: none; /* Keep the wizard neat and touch-scrollable without messy scroll tracks */
+            }
+            .pipeline-node {
+                flex-shrink: 0;
+            }
+            .pipeline-vector-divider {
+                min-width: 20px;
+            }
+            .workspace-dashboard-canvas {
+                padding: 24px 20px;
+                gap: 32px;
+            }
+            .matrix-row-entry {
                 grid-template-columns: 1fr auto;
-                gap: 6px 12px;
-                padding: 14px 0;
-                border-bottom: 1px dashed var(--border-gray);
+                gap: 6px 16px;
+                padding: 16px 0;
+                border-bottom: 1px dashed var(--color-border-clean);
             }
-            .cell-label {
+            .entry-data-label {
                 grid-column: 1 / span 2;
-                font-size: 0.88rem;
+                font-size: 0.9rem;
             }
-            .cell-value {
+            .entry-data-value {
                 grid-column: 1;
                 grid-row: 2;
-                text-align: left;
+                font-size: 0.92rem;
                 padding-right: 0;
             }
-            .cell-status {
+            .entry-status-node {
                 grid-column: 2;
                 grid-row: 2;
                 justify-content: flex-end;
             }
-            .btn-edit {
+            .entry-action-trigger-btn {
                 grid-column: 1 / span 2;
                 grid-row: 3;
                 max-width: 100%;
-                margin-top: 6px;
-                padding: 8px;
-            }
-            .crypto-notice-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 16px;
-            }
-            .crypto-details {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 2px;
-            }
-            .link-info {
-                align-self: flex-end;
                 margin-top: 4px;
+                padding: 9px;
+                font-size: 0.9rem;
             }
-            .action-banner {
+            .workspace-security-guarantee-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+                gap: 14px;
+            }
+            .security-guarantee-copywriting {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .security-guarantee-anchor-link {
+                align-self: flex-end;
+            }
+            .master-conversion-banner {
                 flex-direction: column;
                 text-align: center;
-                padding: 24px 16px;
-                gap: 24px;
+                padding: 32px 20px;
+                gap: 28px;
             }
-            .banner-info {
+            .conversion-banner-details {
                 flex-direction: column;
-                gap: 12px;
+                gap: 16px;
             }
-            .btn-submit-master {
+            .master-submit-action-trigger {
                 width: 100%;
                 justify-content: center;
+                padding: 16px;
             }
         }
 
         @media (max-width: 480px) {
-            .step-text {
+            .pipeline-label-text {
                 display: none;
             }
-            .step-item.current .step-text {
+            .pipeline-node.status-active .pipeline-label-text {
                 display: inline-block;
-                font-size: 0.8rem;
+                font-size: 0.82rem;
             }
-            .heading-left h1 {
-                font-size: 1.5rem;
+            .introductory-title-meta h1 {
+                font-size: 1.55rem;
+            }
+            .introductory-title-meta p {
+                font-size: 0.92rem;
+            }
+            .status-legend-matrix {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 16px;
             }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="navbar-content">
-            <div class="navbar-brand">
-                <i class="fas fa-layer-group"></i> MyApply <span>SA</span>
+    <header class="app-navigation-bar">
+        <div class="navigation-container">
+            <div class="navigation-brand-identity">
+                <div class="brand-logo-graphics">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                MyApply <span>SA</span>
             </div>
-            <div class="account-badge">
+            <div class="user-profile-badge-menu">
                 <i class="fas fa-user-circle"></i>
                 <span>Hi, Paul</span>
-                <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
+                <i class="fas fa-chevron-down"></i>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <main class="wrapper">
+    <main class="workspace-wrapper">
 
-        <div class="stepper-panel">
-            <div class="step-item done">
-                <div class="step-badge"><i class="fas fa-check"></i></div>
-                <div class="step-text">Upload Documents</div>
+        <div class="wizard-pipeline-card">
+            <div class="pipeline-node status-done">
+                <div class="pipeline-badge-circle"><i class="fas fa-check"></i></div>
+                <div class="pipeline-label-text">Upload Documents</div>
             </div>
-            <div class="step-divider"></div>
-            <div class="step-item done">
-                <div class="step-badge"><i class="fas fa-check"></i></div>
-                <div class="step-text">AI Extraction</div>
+            <div class="pipeline-vector-divider"></div>
+            <div class="pipeline-node status-done">
+                <div class="pipeline-badge-circle"><i class="fas fa-check"></i></div>
+                <div class="pipeline-label-text">AI Extraction</div>
             </div>
-            <div class="step-divider"></div>
-            <div class="step-item current">
-                <div class="step-badge">3</div>
-                <div class="step-text">Review & Verify</div>
+            <div class="pipeline-vector-divider"></div>
+            <div class="pipeline-node status-active">
+                <div class="pipeline-badge-circle">3</div>
+                <div class="pipeline-label-text">Review & Verify</div>
             </div>
-            <div class="step-divider"></div>
-            <div class="step-item">
-                <div class="step-badge">4</div>
-                <div class="step-text">Your Passport</div>
+            <div class="pipeline-vector-divider"></div>
+            <div class="pipeline-node">
+                <div class="pipeline-badge-circle">4</div>
+                <div class="pipeline-label-text">Your Passport</div>
             </div>
         </div>
 
-        <div class="heading-container">
-            <div class="heading-left">
+        <div class="view-introductory-header-block">
+            <div class="introductory-title-meta">
                 <h1>Review & Verify Your Information</h1>
                 <p>Please review the extracted information and make any necessary corrections.</p>
             </div>
-            <div class="legend-box">
-                <div class="legend-node found"><i class="fas fa-check-circle"></i> Extracted</div>
-                <div class="legend-node lost"><i class="fas fa-times-circle"></i> Missing</div>
+            <div class="status-legend-matrix">
+                <div class="legend-matrix-item type-extracted"><i class="fas fa-check-circle"></i> Extracted</div>
+                <div class="legend-matrix-item type-missing"><i class="fas fa-times-circle"></i> Missing</div>
             </div>
         </div>
 
-        <div class="dashboard-card">
+        <div class="workspace-dashboard-canvas">
             
-            <div class="data-block">
-                <div class="block-header">
-                    <div class="block-avatar"><i class="far fa-user"></i></div>
+            <div class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="far fa-user"></i></div>
                     <h2>Personal Details</h2>
                 </div>
                 
-                <div class="data-row">
-                    <span class="cell-label">Full Name</span>
-                    <span class="cell-value">Paul</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Full Name</span>
+                    <span class="entry-data-value">Paul</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Identity Number</span>
-                    <span class="cell-value">************</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Identity Number</span>
+                    <span class="entry-data-value">************</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Date of Birth</span>
-                    <span class="cell-value">12 May 2006</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Date of Birth</span>
+                    <span class="entry-data-value">12 May 2006</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Email Address</span>
-                    <span class="cell-value">paul@example.com</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Email Address</span>
+                    <span class="entry-data-value">paul@example.com</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Phone Number</span>
-                    <span class="cell-value">067 123 4567</span>
-                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Phone Number</span>
+                    <span class="entry-data-value">067 123 4567</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
             </div>
 
-            <div class="data-block">
-                <div class="block-header">
-                    <div class="block-avatar"><i class="fas fa-graduation-cap"></i></div>
+            <div class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="fas fa-graduation-cap"></i></div>
                     <h2>School Information</h2>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">School Name</span>
-                    <span class="cell-value">ABC High School</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">School Name</span>
+                    <span class="entry-data-value">ABC High School</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Province</span>
-                    <span class="cell-value">Gauteng</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Province</span>
+                    <span class="entry-data-value">Gauteng</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Year Completed</span>
-                    <span class="cell-value">2023</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Year Completed</span>
+                    <span class="entry-data-value">2023</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
             </div>
 
-            <div class="data-block">
-                <div class="block-header">
-                    <div class="block-avatar"><i class="far fa-file-alt"></i></div>
+            <div class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="far fa-file-alt"></i></div>
                     <h2>Subjects & Marks</h2>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Mathematics</span>
-                    <span class="cell-value">85%</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Mathematics</span>
+                    <span class="entry-data-value">85%</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">English</span>
-                    <span class="cell-value">78%</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">English</span>
+                    <span class="entry-data-value">78%</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Physical Sciences</span>
-                    <span class="cell-value">--</span>
-                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Physical Sciences</span>
+                    <span class="entry-data-value">--</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Life Sciences</span>
-                    <span class="cell-value">--</span>
-                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Life Sciences</span>
+                    <span class="entry-data-value">--</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">APS (Estimated)</span>
-                    <span class="cell-value">--</span>
-                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">APS (Estimated)</span>
+                    <span class="entry-data-value">--</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
             </div>
 
-            <div class="data-block">
-                <div class="block-header">
-                    <div class="block-avatar"><i class="fas fa-shield-alt"></i></div>
+            <div class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="fas fa-shield-alt"></i></div>
                     <h2>Documents Summary</h2>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">ID Document</span>
-                    <span class="cell-value">Extracted successfully</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">ID Document</span>
+                    <span class="entry-data-value">Extracted successfully</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Matric Results</span>
-                    <span class="cell-value">Extracted successfully</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Matric Results</span>
+                    <span class="entry-data-value">Extracted successfully</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Proof of Residence</span>
-                    <span class="cell-value">Extracted successfully</span>
-                    <div class="cell-status valid"><i class="fas fa-check-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Proof of Residence</span>
+                    <span class="entry-data-value">Extracted successfully</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="data-row">
-                    <span class="cell-label">Other Documents</span>
-                    <span class="cell-value" style="color: var(--text-muted); font-weight: 500;">No document uploaded</span>
-                    <div class="cell-status invalid"><i class="fas fa-times-circle"></i></div>
-                    <button class="btn-edit">Edit</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Other Documents</span>
+                    <span class="entry-data-value" style="color: var(--color-text-muted); font-weight: 500;">No document uploaded</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
             </div>
 
-            <div class="crypto-notice-bar">
-                <div class="crypto-left">
+            <div class="workspace-security-guarantee-bar">
+                <div class="security-guarantee-left">
                     <i class="fas fa-lock"></i>
-                    <div class="crypto-details">
+                    <div class="security-guarantee-copywriting">
                         <h4>Your data is secure</h4>
                         <p>Your documents are encrypted and stored securely.</p>
                     </div>
                 </div>
-                <a href="#" class="link-info">Learn more <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i></a>
+                <a href="#" class="security-guarantee-anchor-link">Learn more <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i></a>
             </div>
 
         </div>
 
-        <div class="action-banner">
-            <div class="banner-info">
-                <div class="banner-icon-container">
+        <div class="master-conversion-banner">
+            <div class="conversion-banner-details">
+                <div class="conversion-banner-icon-frame">
                     <i class="fas fa-graduation-cap"></i>
                 </div>
-                <div class="banner-copy">
+                <div class="conversion-banner-text-strings">
                     <h3>One passport. Many opportunities.</h3>
                     <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
                 </div>
             </div>
-            <button class="btn-submit-master">Save & Continue <i class="fas fa-arrow-right"></i></button>
+            <button class="master-submit-action-trigger">Save & Continue <i class="fas fa-arrow-right"></i></button>
         </div>
 
-        <div class="copyright-tag">
+        <footer class="system-copyright-container">
             &copy; 2026 MyApply SA. All rights reserved.
-        </div>
+        </footer>
 
     </main>
 
