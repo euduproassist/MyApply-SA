@@ -2,621 +2,904 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyApply SA - AI Extraction</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes">
+    <title>Atlas Portal - AI Document Extraction Engine</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* ==========================================================================
+           GLOBAL UTILITY STRUCTURAL DESIGN SYSTEM TOKENS
+           ========================================================================== */
         :root {
-            --primary-blue: #0052cc;
-            --light-blue-bg: #f4f8ff;
-            --text-dark: #091e42;
-            --text-muted: #6b778c;
-            --border-light: #f1f3f5;
-            --badge-blue-bg: #e6f0ff;
-            --badge-blue-text: #0052cc;
-            --badge-gray-bg: #f4f5f7;
-            --badge-gray-text: #5e6c84;
-            --body-bg: #fafbfc;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--body-bg);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* --- Global Header Navigation --- */
-        .header {
-            width: 100%;
-            background: #ffffff;
-            border-bottom: 1px solid #ebecf0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .header-inner {
-            width: 100%;
-            max-width: 1100px;
-            height: 70px;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.45rem;
-            color: #091e42;
-        }
-
-        .brand-icon-wrapper {
-            background: var(--primary-blue);
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .brand-icon-wrapper i {
-            color: #ffffff;
-            font-size: 1.1rem;
-        }
-
-        .brand span {
-            color: var(--primary-blue);
-            margin-left: 2px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .user-profile i.fa-user-circle {
-            font-size: 1.7rem;
-            color: var(--primary-blue);
-        }
-
-        .user-profile i.fa-chevron-down {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-left: 2px;
-        }
-
-        /* --- Page Content Wrapper --- */
-        .wrapper {
-            width: 100%;
-            max-width: 1040px;
-            padding: 40px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        /* --- 100% Visual Matching Progress Stepper Line --- */
-        .stepper-container {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            padding: 0 20px;
-        }
-
-        .stepper-line-back {
-            position: absolute;
-            top: 16px;
-            left: 50px;
-            right: 50px;
-            height: 1px;
-            background-color: #e3e6eb;
-            z-index: 1;
-        }
-
-        .step-node {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--body-bg);
-            padding: 0 16px;
-            z-index: 2;
-        }
-
-        .step-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #ffffff;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: 1px solid #dcdfe4;
-        }
-
-        /* Complete State style */
-        .step-node.completed .step-circle {
-            background: var(--primary-blue);
-            color: #ffffff;
-            border-color: var(--primary-blue);
-        }
-
-        /* Active State style */
-        .step-node.active .step-circle {
-            background: var(--primary-blue);
-            color: #ffffff;
-            border-color: var(--primary-blue);
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .step-node.active .step-label {
-            color: var(--primary-blue);
-            font-weight: 700;
-        }
-
-        /* --- Core Extraction Centerpiece Card --- */
-        .workspace-card {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 64px 40px;
-            border: 1px solid #e3e6eb;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.015);
-        }
-
-        .file-icon-frame {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            background: #f0f5ff;
-            color: var(--primary-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            position: relative;
-            margin-bottom: 24px;
-        }
-
-        .file-icon-frame .fa-sparkles {
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            font-size: 1.4rem;
-            color: var(--primary-blue);
-            background: #f0f5ff;
-            padding: 4px;
-            border-radius: 50%;
-        }
-
-        .workspace-card h1 {
-            font-size: 1.9rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 14px;
-            letter-spacing: -0.5px;
-            text-align: center;
-        }
-
-        .workspace-card p.instructions {
-            font-size: 1rem;
-            color: var(--text-muted);
-            max-width: 580px;
-            line-height: 1.6;
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        /* Meter Progress Load Track Container */
-        .progress-meter-stack {
-            width: 100%;
-            max-width: 560px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 36px;
-        }
-
-        .meter-track {
-            width: 100%;
-            height: 12px;
-            background: #eff1f4;
-            border-radius: 99px;
-            overflow: hidden;
-        }
-
-        .meter-fill {
-            width: 65%;
-            height: 100%;
-            background: var(--primary-blue);
-            border-radius: 99px;
-        }
-
-        .counter-display {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        /* Processing Logs Pipeline Status List Box */
-        .logs-pipeline-box {
-            width: 100%;
-            max-width: 560px;
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            border: 1px solid #f1f3f5;
-            margin-bottom: 32px;
-        }
-
-        .log-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .log-row-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .log-row-left i {
-            font-size: 1.2rem;
-            color: var(--primary-blue);
-        }
-
-        .log-row-left i.fa-circle-notch {
-            animation: globalSpin 1.6s linear infinite;
-        }
-
-        .log-row-left i.fa-circle-dot {
-            color: #cbd5e1;
-        }
-
-        .log-text-group h3 {
-            font-size: 0.98rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .log-text-group p {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .status-badge.in-progress {
-            background: var(--badge-blue-bg);
-            color: var(--badge-blue-text);
-        }
-
-        .status-badge.pending {
-            background: var(--badge-gray-bg);
-            color: var(--badge-gray-text);
-        }
-
-        .security-footnote {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .security-footnote i {
-            color: var(--primary-blue);
-        }
-
-        /* --- Footer Bottom Level Action Ribbon --- */
-        .passport-action-ribbon {
-            background: #e6f0ff;
-            border-radius: 20px;
-            padding: 28px 36px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-            border: 1px solid #cce0ff;
-        }
-
-        .ribbon-left-side {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .shield-icon-container {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 1px solid #b3d1ff;
-            color: var(--primary-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            flex-shrink: 0;
-        }
-
-        .ribbon-text-stack h2 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 4px;
-            letter-spacing: -0.2px;
-        }
-
-        .ribbon-text-stack p {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            max-width: 520px;
-        }
-
-        .btn-action-primary {
-            padding: 16px 32px;
-            background-color: var(--primary-blue);
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: background 0.15s ease;
-            white-space: nowrap;
-        }
-
-        .btn-action-primary:hover {
-            background-color: #0043a8;
-        }
-
-        .global-footer-copyright {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-align: center;
-            width: 100%;
-            margin-top: 8px;
-            margin-bottom: 24px;
-        }
-
-        @keyframes globalSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            /* Branding Primary & Interactive Core Variants */
+            --brand-blue-primary: #0052cc;
+            --brand-blue-hover: #0043a4;
+            --brand-blue-active: #00317a;
+            --brand-blue-tint: #eff6ff;
+            --brand-blue-border: #bfdbfe;
+            --brand-blue-focus: rgba(0, 82, 204, 0.18);
+            
+            /* Typography Color Matrix Scales */
+            --text-color-primary: #0f172a;
+            --text-color-muted: #64748b;
+            --text-color-light: #94a3b8;
+            --text-color-white: #ffffff;
+            
+            /* Architectural Layout Canvas Surfaces */
+            --surface-bg-workspace: #f8fafc;
+            --surface-bg-card: #ffffff;
+            --surface-bg-row-hover: #fafafa;
+            --surface-bg-badge-gray: #f1f5f9;
+            
+            /* Structural Grid Lines & Separators */
+            --border-clean-line: #e2e8f0;
+            --border-card-boundary: #e2e8f0;
+            
+            /* Functional UI Contextual States */
+            --ui-green-success: #10b981;
+            --ui-green-bg: #ecfdf5;
+            --ui-green-border: #a7f3d0;
+            --ui-red-error: #ef4444;
+            --ui-red-bg: #fef2f2;
+            --ui-red-border: #fca5a5;
+            
+            /* Typography Stack Framework */
+            --font-stack-master: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* Kinematic Micro-Interaction Timings */
+            --transition-fluid: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-instant: all 0.15s cubic-bezier(0, 0, 0.2, 1);
+            
+            /* Multi-Level Layer Ambient Box Shadows */
+            --shadow-level-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-level-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-level-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.02), 0 4px 6px -2px rgba(15, 23, 42, 0.01);
+            --shadow-level-brand: 0 4px 14px rgba(0, 82, 204, 0.18);
+            
+            /* Border Radii Layout Strategy Matrix */
+            --radius-pixel-sm: 6px;
+            --radius-pixel-md: 8px;
+            --radius-pixel-lg: 12px;
+            --radius-pixel-xl: 16px;
+            --radius-circle: 50%;
+            --radius-pill-capsule: 100px;
         }
 
         /* ==========================================================================
-           RESPONSIVE CONFIGURATION: ZERO HORIZONTAL SCROLL GUARANTEE
+           HARD BOX RESIZING SAFETY RULES & ZERO SIDE SCROLL INJECTIONS
            ========================================================================== */
-        @media (max-width: 890px) {
-            .step-label {
-                display: none; /* Safely drops labels on tablets to protect screen container limits */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100%;
+            font-size: 16px;
+            scroll-behavior: smooth;
+            background-color: var(--surface-bg-workspace);
+            overflow-x: hidden !important;
+        }
+
+        body {
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+            background-color: var(--surface-bg-workspace);
+            color: var(--text-color-primary);
+            font-family: var(--font-stack-master);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-x: hidden !important;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* ==========================================================================
+           SYSTEM TOP HEADER NAVIGATION STRUCTURAL BLOCK
+           ========================================================================== */
+        header.app-navigation-bar {
+            width: 100%;
+            background: var(--surface-bg-card);
+            border-bottom: 1px solid var(--border-clean-line);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 72px;
+            box-shadow: var(--shadow-level-sm);
+        }
+
+        .navigation-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .navigation-brand-identity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--text-color-primary);
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            user-select: none;
+            text-decoration: none;
+        }
+
+        .navigation-brand-identity .brand-logo-graphics {
+            background: var(--brand-blue-primary);
+            color: var(--text-color-white);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: var(--shadow-level-brand);
+            transition: var(--brand-blue-hover);
+        }
+
+        .navigation-brand-identity span {
+            color: var(--brand-blue-primary);
+            font-weight: 600;
+        }
+
+        .user-profile-badge-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill-capsule);
+            background: transparent;
+            transition: var(--transition-fluid);
+            user-select: none;
+            border: 1px solid transparent;
+        }
+
+        .user-profile-badge-menu:hover {
+            background: var(--brand-blue-tint);
+            color: var(--brand-blue-primary);
+            border-color: var(--brand-blue-border);
+        }
+
+        .user-profile-badge-menu i.fa-user-circle {
+            font-size: 1.85rem;
+            color: var(--brand-blue-primary);
+        }
+
+        .user-profile-badge-menu i.fa-chevron-down {
+            font-size: 0.75rem;
+            color: var(--text-color-muted);
+            margin-left: 2px;
+        }
+
+        /* ==========================================================================
+           MAIN CONTENT WORKSPACE WRAPPER CONFIGURATION
+           ========================================================================== */
+        .workspace-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px 24px 80px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            box-sizing: border-box;
+        }
+
+        /* ==========================================================================
+           LINEAR WORKFLOW PIRELINE STEPS MODULE
+           ========================================================================== */
+        .wizard-pipeline-card {
+            background: var(--surface-bg-card);
+            border: 1px solid var(--border-card-boundary);
+            border-radius: var(--radius-pill-capsule);
+            padding: 16px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: var(--shadow-level-sm);
+            user-select: none;
+        }
+
+        .pipeline-node {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+
+        .pipeline-badge-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-circle);
+            background: var(--surface-bg-badge-gray);
+            border: 1px solid var(--border-clean-line);
+            color: var(--text-color-muted);
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fluid);
+            flex-shrink: 0;
+        }
+
+        .pipeline-node.status-done .pipeline-badge-circle {
+            background: var(--brand-blue-primary);
+            border-color: var(--brand-blue-primary);
+            color: var(--text-color-white);
+        }
+
+        .pipeline-node.status-active .pipeline-badge-circle {
+            background: var(--surface-bg-card);
+            border: 2px solid var(--brand-blue-primary);
+            color: var(--brand-blue-primary);
+            font-weight: 800;
+            box-shadow: 0 0 0 4px var(--brand-blue-tint);
+        }
+
+        .pipeline-label-text {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-color-muted);
+            letter-spacing: -0.1px;
+        }
+
+        .pipeline-node.status-active .pipeline-label-text {
+            color: var(--brand-blue-primary);
+            font-weight: 700;
+        }
+
+        .pipeline-node.status-done .pipeline-label-text {
+            color: var(--text-color-primary);
+        }
+
+        .pipeline-vector-divider {
+            flex-grow: 1;
+            height: 2px;
+            background: var(--border-clean-line);
+            min-width: 20px;
+            border-radius: 2px;
+        }
+
+        /* ==========================================================================
+           CORE AI EXTRACTION CONTAINER SHEET (REPLACES DATA TABLES)
+           ========================================================================== */
+        .extraction-canvas-container {
+            background: var(--surface-bg-card);
+            border: 1px solid var(--border-card-boundary);
+            border-radius: var(--radius-pixel-xl);
+            padding: 56px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: var(--shadow-level-lg);
+            width: 100%;
+        }
+
+        /* Concentric Pulse File Graphics Frame */
+        .status-radial-artframe {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-circle);
+            background: var(--brand-blue-tint);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .status-radial-artframe i.fa-file-alt {
+            font-size: 2.5rem;
+            color: var(--brand-blue-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .status-radial-artframe i.fa-sparkles,
+        .status-radial-artframe i.fa-star {
+            position: absolute;
+            color: var(--brand-blue-primary);
+            font-size: 1.1rem;
+            bottom: 24px;
+            right: 22px;
+            z-index: 3;
+            background: var(--brand-blue-tint);
+            padding: 2px;
+            border-radius: 4px;
+        }
+
+        /* Core Typography Header Copy */
+        .extraction-canvas-container h1 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--text-color-primary);
+            letter-spacing: -0.75px;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .extraction-canvas-container p.extraction-subtitle-copy {
+            font-size: 1.05rem;
+            color: var(--text-color-muted);
+            font-weight: 500;
+            max-width: 580px;
+            line-height: 1.5;
+            margin-bottom: 36px;
+        }
+
+        /* Linear Progress Meter Component Layout */
+        .progress-meter-track {
+            width: 100%;
+            max-width: 540px;
+            height: 12px;
+            background: #f1f5f9;
+            border-radius: var(--radius-pill-capsule);
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-meter-fill {
+            height: 100%;
+            width: 65%; /* Replicates the exact state frame from the image */
+            background: #0052cc;
+            border-radius: var(--radius-pill-capsule);
+            transition: width 0.5s ease-in-out;
+        }
+
+        .progress-percentage-label {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--brand-blue-primary);
+            margin-bottom: 40px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ==========================================================================
+           DOCUMENT STEP PROGRESS MATRIX LEDGER
+           ========================================================================== */
+        .extraction-ledger-card {
+            width: 100%;
+            max-width: 540px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-pixel-lg);
+            padding: 8px 12px;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .ledger-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 20px 16px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .ledger-row-item:last-child {
+            border-bottom: none;
+        }
+
+        .ledger-left-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        /* Radial Status Ring Selectors */
+        .ledger-spinner-icon-frame {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ledger-spinner-icon-frame i {
+            font-size: 1.15rem;
+            color: var(--text-color-light);
+        }
+
+        .ledger-row-item.state-processing .ledger-spinner-icon-frame i {
+            color: var(--brand-blue-primary);
+            animation: ui-spin-keyframes 2s linear infinite;
+        }
+
+        .ledger-row-item.state-processing .ledger-spinner-icon-frame i.fa-circle-notch {
+            display: block;
+        }
+        
+        .ledger-row-item.state-processing i.fa-dot-circle,
+        .ledger-row-item.state-pending i.fa-circle-notch {
+            display: none;
+        }
+
+        .ledger-meta-strings {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .ledger-meta-strings h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-color-primary);
+            line-height: 1.3;
+        }
+
+        .ledger-meta-strings p {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-color-muted);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Contextual Status Tag Badges */
+        .status-badge-node {
+            padding: 6px 12px;
+            border-radius: var(--radius-pixel-sm);
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: lowercase;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        .status-badge-node::first-letter {
+            text-transform: uppercase;
+        }
+
+        .status-badge-node.tag-inprogress {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .status-badge-node.tag-pending {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Ambient Cryptographic Shield Security Label */
+        .embedded-secure-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text-color-muted);
+            font-size: 0.92rem;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .embedded-secure-indicator i {
+            color: var(--brand-blue-primary);
+            font-size: 1rem;
+        }
+
+        /* ==========================================================================
+           CONVERSION ACTION BANNER STICKY LAYOUT MODULE
+           ========================================================================== */
+        .master-conversion-banner {
+            background: var(--brand-blue-tint);
+            border: 1px solid var(--brand-blue-border);
+            border-radius: var(--radius-pixel-xl);
+            padding: 36px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            box-shadow: var(--shadow-level-md);
+            width: 100%;
+        }
+
+        .conversion-banner-details {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            text-align: left;
+        }
+
+        .conversion-banner-icon-frame {
+            width: 64px;
+            height: 64px;
+            background: var(--text-color-white);
+            border: 1px solid var(--brand-blue-border);
+            border-radius: var(--radius-circle);
+            color: var(--brand-blue-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.65rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-level-sm);
+        }
+
+        .conversion-banner-text-strings h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-color-primary);
+            margin-bottom: 6px;
+            letter-spacing: -0.25px;
+        }
+
+        .conversion-banner-text-strings p {
+            font-size: 1rem;
+            color: var(--text-color-muted);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .master-submit-action-trigger {
+            background: var(--brand-blue-primary);
+            color: var(--text-color-white);
+            border: none;
+            padding: 18px 40px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition-fluid);
+            white-space: nowrap;
+            box-shadow: var(--shadow-level-brand);
+            outline: none;
+            user-select: none;
+        }
+
+        .master-submit-action-trigger:hover {
+            background: var(--brand-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 82, 204, 0.25);
+        }
+
+        .master-submit-action-trigger:active {
+            transform: translateY(0);
+            background: var(--brand-blue-active);
+        }
+
+        .master-submit-action-trigger i {
+            transition: var(--transition-fluid);
+        }
+
+        .master-submit-action-trigger:hover i {
+            transform: translateX(4px);
+        }
+
+        /* Persistent Architectural Footer System */
+        footer.system-copyright-container {
+            text-align: center;
+            font-size: 0.88rem;
+            color: var(--text-color-light);
+            font-weight: 500;
+            user-select: none;
+            width: 100%;
+        }
+
+        /* Animation Keyframe Profiles */
+        @keyframes ui-spin-keyframes {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ==========================================================================
+           RESPONSIVE STRUCTURAL MEDIA QUERIES (0% SIDEWAYS BLEED ASSURANCES)
+           ========================================================================== */
+        @media (max-width: 920px) {
+            .wizard-pipeline-card {
+                padding: 16px 24px;
+                border-radius: var(--radius-pixel-xl);
             }
-            .stepper-line-back {
-                left: 30px;
-                right: 30px;
+            .pipeline-label-text {
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 768px) {
-            .wrapper {
-                padding: 24px 16px;
-                gap: 24px;
+            .workspace-wrapper {
+                padding: 24px 16px 60px 16px;
+                gap: 28px;
             }
-            .workspace-card {
-                padding: 44px 20px;
+            
+            .wizard-pipeline-card {
+                border-radius: var(--radius-pixel-lg);
+                padding: 20px 16px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 8px;
             }
-            .passport-action-ribbon {
+
+            .pipeline-label-text {
+                display: none; 
+            }
+
+            .pipeline-node.status-active .pipeline-label-text {
+                display: block;
+                font-size: 0.85rem;
+                max-width: 90px;
+                white-space: normal;
+                line-height: 1.2;
+            }
+
+            .pipeline-vector-divider {
+                min-width: 12px;
+                margin: 0 2px;
+            }
+            
+            .extraction-canvas-container {
+                padding: 40px 20px;
+            }
+
+            .extraction-canvas-container h1 {
+                font-size: 1.75rem;
+            }
+            
+            .master-conversion-banner {
                 flex-direction: column;
                 text-align: center;
-                padding: 28px 20px;
-                gap: 24px;
+                padding: 36px 24px;
+                gap: 32px;
+                border-radius: var(--radius-pixel-xl);
             }
-            .ribbon-left-side {
+
+            .conversion-banner-details {
                 flex-direction: column;
-                gap: 14px;
+                gap: 16px;
+                text-align: center;
             }
-            .btn-action-primary {
+
+            .master-submit-action-trigger {
                 width: 100%;
                 justify-content: center;
+                padding: 18px;
             }
         }
 
         @media (max-width: 480px) {
-            .header-inner {
-                height: 65px;
-                padding: 0 16px;
+            .wizard-pipeline-card {
+                padding: 16px 12px;
+                gap: 4px;
             }
-            .brand {
-                font-size: 1.25rem;
+
+            .pipeline-node.status-active .pipeline-label-text {
+                font-size: 0.78rem;
+                max-width: 70px;
             }
-            .stepper-container {
-                padding: 0;
+
+            .pipeline-node {
+                gap: 6px;
             }
-            .step-node {
-                padding: 0 8px;
+
+            .pipeline-badge-circle {
+                width: 28px;
+                height: 28px;
+                font-size: 0.82rem;
             }
-            .workspace-card h1 {
+            
+            .extraction-canvas-container {
+                padding: 32px 16px;
+            }
+
+            .extraction-canvas-container h1 {
                 font-size: 1.5rem;
+                letter-spacing: -0.5px;
             }
-            .logs-pipeline-box {
-                padding: 16px;
+
+            .extraction-canvas-container p.extraction-subtitle-copy {
+                font-size: 0.95rem;
+                margin-bottom: 28px;
+            }
+
+            .progress-percentage-label {
+                font-size: 1.25rem;
+                margin-bottom: 32px;
+            }
+
+            .ledger-row-item {
+                padding: 16px 12px;
+            }
+
+            .ledger-meta-strings h3 {
+                font-size: 0.95rem;
+            }
+
+            .ledger-meta-strings p {
+                font-size: 0.82rem;
+            }
+
+            .status-badge-node {
+                padding: 4px 8px;
+                font-size: 0.72rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .pipeline-node.status-active .pipeline-label-text {
+                display: none; 
+            }
+
+            .wizard-pipeline-card {
+                justify-content: space-around;
+                padding: 12px 6px;
+            }
+
+            .pipeline-vector-divider {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-inner">
-            <div class="brand">
-                <div class="brand-icon-wrapper"><i class="fas fa-layer-group"></i></div> MyApply <span>SA</span>
-            </div>
-            <div class="user-profile">
-                <i class="fas fa-user-circle"></i> Hi, Paul <i class="fas fa-chevron-down"></i>
+    <header class="app-navigation-bar">
+        <div class="navigation-container">
+            <a href="#" class="navigation-brand-identity">
+                <div class="brand-logo-graphics">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                Atlas <span>Portal</span>
+            </a>
+            <div class="user-profile-badge-menu">
+                <i class="fas fa-user-circle"></i>
+                <span>Hi, Paul</span>
+                <i class="fas fa-chevron-down"></i>
             </div>
         </div>
     </header>
 
-    <div class="wrapper">
-        
-        <nav class="stepper-container">
-            <div class="stepper-line-back"></div>
-            
-            <div class="step-node completed">
-                <div class="step-circle"><i class="fas fa-check" style="font-size: 0.8rem;"></i></div>
-                <div class="step-label">Upload Documents</div>
-            </div>
-            
-            <div class="step-node active">
-                <div class="step-circle">2</div>
-                <div class="step-label">AI Extraction</div>
-            </div>
-            
-            <div class="step-node">
-                <div class="step-circle">3</div>
-                <div class="step-label">Review & Verify</div>
-            </div>
-            
-            <div class="step-node">
-                <div class="step-circle">4</div>
-                <div class="step-label">Your Passport</div>
-            </div>
-        </nav>
+    <main class="workspace-wrapper">
 
-        <main class="workspace-card">
+        <div class="wizard-pipeline-card">
+            <div class="pipeline-node status-done">
+                <div class="pipeline-badge-circle"><i class="fas fa-check"></i></div>
+                <div class="pipeline-label-text">Upload Documents</div>
+            </div>
+            <div class="pipeline-vector-divider"></div>
+            <div class="pipeline-node status-active">
+                <div class="pipeline-badge-circle">2</div>
+                <div class="pipeline-label-text">AI Extraction</div>
+            </div>
+            <div class="pipeline-vector-divider"></div>
+            <div class="pipeline-node">
+                <div class="pipeline-badge-circle">3</div>
+                <div class="pipeline-label-text">Review & Verify</div>
+            </div>
+            <div class="pipeline-vector-divider"></div>
+            <div class="pipeline-node">
+                <div class="pipeline-badge-circle">4</div>
+                <div class="pipeline-label-text">Your Passport</div>
+            </div>
+        </div>
+
+        <div class="extraction-canvas-container">
             
-            <div class="file-icon-frame">
+            <div class="status-radial-artframe">
                 <i class="far fa-file-alt"></i>
-                <i class="fas fa-sparkles"></i>
+                <i class="fas fa-star"></i>
             </div>
 
             <h1>Extracting Your Information</h1>
-            <p class="instructions">Our AI is reading your documents and extracting the important details. This may take a few moments.</p>
+            <p class="extraction-subtitle-copy">Our AI is reading your documents and extracting the important details. This may take a few moments.</p>
 
-            <div class="progress-meter-stack">
-                <div class="meter-track">
-                    <div class="meter-fill"></div>
-                </div>
-                <div class="counter-display">65%</div>
+            <div class="progress-meter-track">
+                <div class="progress-meter-fill"></div>
             </div>
+            <div class="progress-percentage-label">65%</div>
 
-            <div class="logs-pipeline-box">
+            <div class="extraction-ledger-card">
                 
-                <div class="log-row">
-                    <div class="log-row-left">
-                        <i class="fas fa-circle-notch"></i>
-                        <div class="log-text-group">
+                <div class="ledger-row-item state-processing">
+                    <div class="ledger-left-group">
+                        <div class="ledger-spinner-icon-frame">
+                            <i class="fas fa-circle-notch"></i>
+                        </div>
+                        <div class="ledger-meta-strings">
                             <h3>Reading your documents...</h3>
                             <p>ID Document</p>
                         </div>
                     </div>
-                    <span class="status-badge in-progress">In progress</span>
+                    <div class="status-badge-node tag-inprogress">In progress</div>
                 </div>
 
-                <div class="log-row">
-                    <div class="log-row-left">
-                        <i class="far fa-circle-dot"></i>
-                        <div class="log-text-group">
+                <div class="ledger-row-item state-pending">
+                    <div class="ledger-left-group">
+                        <div class="ledger-spinner-icon-frame">
+                            <i class="far fa-dot-circle"></i>
+                        </div>
+                        <div class="ledger-meta-strings">
                             <h3>Extracting personal details</h3>
                         </div>
                     </div>
-                    <span class="status-badge pending">Pending</span>
+                    <div class="status-badge-node tag-pending">Pending</div>
                 </div>
 
-                <div class="log-row">
-                    <div class="log-row-left">
-                        <i class="far fa-circle-dot"></i>
-                        <div class="log-text-group">
+                <div class="ledger-row-item state-pending">
+                    <div class="ledger-left-group">
+                        <div class="ledger-spinner-icon-frame">
+                            <i class="far fa-dot-circle"></i>
+                        </div>
+                        <div class="ledger-meta-strings">
                             <h3>Extracting academic information</h3>
                         </div>
                     </div>
-                    <span class="status-badge pending">Pending</span>
+                    <div class="status-badge-node tag-pending">Pending</div>
                 </div>
 
-                <div class="log-row">
-                    <div class="log-row-left">
-                        <i class="far fa-circle-dot"></i>
-                        <div class="log-text-group">
+                <div class="ledger-row-item state-pending">
+                    <div class="ledger-left-group">
+                        <div class="ledger-spinner-icon-frame">
+                            <i class="far fa-dot-circle"></i>
+                        </div>
+                        <div class="ledger-meta-strings">
                             <h3>Organizing your data</h3>
                         </div>
                     </div>
-                    <span class="status-badge pending">Pending</span>
+                    <div class="status-badge-node tag-pending">Pending</div>
                 </div>
 
             </div>
 
-            <div class="security-footnote">
-                <i class="fas fa-lock"></i> Your data is secure and encrypted
+            <div class="embedded-secure-indicator">
+                <i class="fas fa-shield-alt"></i>
+                <span>Your data is secure and encrypted</span>
             </div>
 
-        </main>
+        </div>
 
-        <section class="passport-action-ribbon">
-            <div class="ribbon-left-side">
-                <div class="shield-icon-container"><i class="fas fa-shield-cat"></i></div>
-                <div class="ribbon-text-stack">
-                    <h2>One passport. Many opportunities.</h2>
+        <div class="master-conversion-banner">
+            <div class="conversion-banner-details">
+                <div class="conversion-banner-icon-frame">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="conversion-banner-text-strings">
+                    <h3>One passport. Many opportunities.</h3>
                     <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
                 </div>
             </div>
-            <button class="btn-action-primary">Save & Continue <i class="fas fa-arrow-right"></i></button>
-        </section>
+            <button class="master-submit-action-trigger">Save & Continue <i class="fas fa-arrow-right"></i></button>
+        </div>
 
-        <footer class="global-footer-copyright">
-            &copy; 2025 MyApply SA. All rights reserved.
+        <footer class="system-copyright-container">
+            &copy; 2026 Atlas Portal. All rights reserved.
         </footer>
 
-    </div>
+    </main>
+
 </body>
 </html>
