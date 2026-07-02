@@ -2,559 +2,1191 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyApply SA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes">
+    <title>MyApply SA - Premium Academic Passport Ecosystem</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <style>
+        /* ==========================================================================
+           GLOBAL DESIGN INTENT SYSTEM TOKENS & CANVAS ARCHITECTURE VARIABLES
+           ========================================================================== */
         :root {
-            --primary-blue: #1c64f2;
-            --primary-blue-hover: #1a56cc;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --light-bg: #f8fafc;
-            --border-color: #e2e8f0;
-            --pill-bg: #eff6ff;
-            --pill-text: #1d6ed0;
+            /* Pure Brand Foundations & Kinetic State Transitions Color Map */
+            --brand-primary: #0052cc;
+            --brand-primary-hover: #0043a4;
+            --brand-primary-active: #00317a;
+            --brand-primary-light: #eff6ff;
+            --brand-primary-border: #bfdbfe;
+            --brand-primary-focus: rgba(0, 82, 204, 0.18);
+            
+            /* Academic Passport Complementary Hue Definitions */
+            --accent-blue-tint: #2563eb;
+            --accent-blue-pill-bg: #eff6ff;
+            
+            /* Rigid Typography Structural Semantic Matrix Colors */
+            --text-main-heavy: #0f172a;
+            --text-muted-mid: #64748b;
+            --text-light-disabled: #94a3b8;
+            --text-absolute-white: #ffffff;
+            
+            /* Professional Architecture Surfaces & Background Canvas Hues */
+            --surface-bg-workspace: #f8fafc;
+            --surface-bg-card: #ffffff;
+            --surface-bg-hover-row: #fafafa;
+            --surface-bg-alt-stripe: #f8fafc;
+            
+            /* Micro Structural Edge Elements, Rules & Separators */
+            --border-clean-line: #e2e8f0;
+            --border-card-bounding: #e2e8f0;
+            --border-dashed-variant: #cbd5e1;
+            
+            /* Dynamic State-Machine Status Evaluation Feedback Hues */
+            --status-green-success: #10b981;
+            --status-green-light-bg: #ecfdf5;
+            --status-green-edge: #a7f3d0;
+            --status-red-danger: #ef4444;
+            --status-red-light-bg: #fef2f2;
+            --status-red-edge: #fca5a5;
+            
+            /* Typography Stack Directives */
+            --font-stack-master: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* Physics Engine Parameters for Interaction Micro-Transitions */
+            --kinetics-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --kinetics-snappy: all 0.15s cubic-bezier(0, 0, 0.2, 1);
+            
+            /* Deep Multi-Layer Ambient Depth Elevation Shadows */
+            --elevation-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --elevation-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --elevation-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.02), 0 4px 6px -2px rgba(15, 23, 42, 0.01);
+            --elevation-brand-glow: 0 4px 14px rgba(0, 82, 204, 0.18);
+            
+            /* Structural Radius Scaling Coordinates */
+            --geometry-radius-sm: 6px;
+            --geometry-radius-md: 8px;
+            --geometry-radius-lg: 12px;
+            --geometry-radius-xl: 16px;
+            --geometry-radius-round: 50%;
+            --geometry-radius-pill: 100px;
         }
 
-        * {
+        /* ==========================================================================
+           CORE ARCHITECTURAL RESET & MULTI-VIEWPORT SIDEWAYS BLEED SAFETY SYSTEM
+           ========================================================================== */
+        *, *::before, *::after {
             box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100%;
+            font-size: 16px;
+            scroll-behavior: smooth;
+            background-color: var(--surface-bg-workspace);
+            overflow-x: hidden !important;
         }
 
         body {
-            background-color: #f8fafc;
-            color: var(--text-dark);
+            width: 100%;
+            max-width: 100%;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
+            background-color: var(--surface-bg-workspace);
+            color: var(--text-main-heavy);
+            font-family: var(--font-stack-master);
             -webkit-font-smoothing: antialiased;
-        }
-
-        .header {
-            width: 100%;
-            max-width: 1000px;
-            height: 70px;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #ffffff;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 1.35rem;
-            color: var(--text-dark);
-        }
-
-        .brand i {
-            color: var(--primary-blue);
-            font-size: 1.5rem;
-        }
-
-        .brand span {
-            color: var(--primary-blue);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .user-profile i.fa-user-circle {
-            font-size: 1.6rem;
-            color: var(--primary-blue);
-        }
-
-        .user-profile i.fa-chevron-down {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .wrapper {
-            width: 100%;
-            max-width: 1000px;
-            padding: 24px;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
             display: flex;
             flex-direction: column;
-            gap: 24px;
-        }
-
-        /* Progress Steps */
-        .progress-container {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: flex-start;
+            overflow-x: hidden !important;
+            overflow-y: auto;
+            position: relative;
         }
 
-        .step-node {
+        /* ==========================================================================
+           TOP-TIER SYSTEM PERSISTENT NAVIGATION BAR VIEWPORT FRAME
+           ========================================================================== */
+        header.app-navigation-bar {
+            width: 100%;
+            background: var(--surface-bg-card);
+            border-bottom: 1px solid var(--border-clean-line);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 76px;
+            box-shadow: var(--elevation-sm);
+        }
+
+        .navigation-container {
+            width: 100%;
+            max-width: 1048px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .navigation-brand-identity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--text-main-heavy);
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            user-select: none;
+            text-decoration: none;
+        }
+
+        .navigation-brand-identity .brand-logo-graphics {
+            background: var(--brand-primary);
+            color: var(--text-absolute-white);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: var(--elevation-brand-glow);
+            transition: var(--kinetics-smooth);
+        }
+
+        .navigation-brand-identity:hover .brand-logo-graphics {
+            background: var(--brand-primary-hover);
+            transform: scale(1.02);
+        }
+
+        .navigation-brand-identity span {
+            color: var(--brand-primary);
+        }
+
+        .user-profile-badge-menu {
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: var(--geometry-radius-pill);
+            background: transparent;
+            transition: var(--kinetics-smooth);
+            user-select: none;
+            border: 1px solid transparent;
+        }
+
+        .user-profile-badge-menu:hover {
+            background: var(--brand-primary-light);
+            color: var(--brand-primary);
+            border-color: var(--brand-primary-border);
+        }
+
+        .user-profile-badge-menu i.fa-user-circle {
+            font-size: 1.85rem;
+            color: var(--brand-primary);
+            transition: var(--kinetics-smooth);
+        }
+
+        .user-profile-badge-menu i.fa-chevron-down {
+            font-size: 0.75rem;
+            color: var(--text-muted-mid);
+            margin-left: 2px;
+            transition: var(--kinetics-smooth);
+        }
+
+        /* ==========================================================================
+           CENTRAL WORKSPACE CONTENT LAYOUT FRAME SYSTEM
+           ========================================================================== */
+        .workspace-wrapper {
+            width: 100%;
+            max-width: 1048px;
+            padding: 40px 24px 80px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            box-sizing: border-box;
+        }
+
+        /* ==========================================================================
+           STEP WIZARD PROGRESSION ROADMAP PIPELINE ENGINE
+           ========================================================================== */
+        .wizard-pipeline-card {
+            background: var(--surface-bg-card);
+            border: 1px solid var(--border-card-bounding);
+            border-radius: var(--geometry-radius-xl);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: var(--elevation-sm);
+            user-select: none;
+        }
+
+        .pipeline-node {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
             position: relative;
             flex: 1;
             justify-content: center;
         }
 
-        .step-node:not(:last-child)::after {
+        .pipeline-node:not(:last-child)::after {
             content: '';
             position: absolute;
-            right: -15%;
+            right: -35%;
             top: 50%;
-            width: 30%;
-            height: 1px;
-            background-color: var(--border-color);
+            width: 70%;
+            height: 2px;
+            background-color: var(--border-clean-line);
             z-index: 1;
+            transition: var(--kinetics-smooth);
         }
 
-        .step-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--light-bg);
-            color: var(--text-muted);
+        .pipeline-badge-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--geometry-radius-round);
+            background: #f1f5f9;
+            border: 1px solid var(--border-clean-line);
+            color: var(--text-muted-mid);
+            font-size: 0.9rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
-            font-weight: 700;
+            transition: var(--kinetics-smooth);
+            flex-shrink: 0;
+            position: relative;
             z-index: 2;
         }
 
-        .step-node.active .step-circle {
-            background: var(--primary-blue);
-            color: #ffffff;
+        .pipeline-node.status-done .pipeline-badge-circle {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+            color: var(--text-absolute-white);
         }
 
-        .step-label {
-            font-size: 0.85rem;
+        .pipeline-node.status-active .pipeline-badge-circle {
+            background: var(--surface-bg-card);
+            border: 2px solid var(--brand-primary);
+            color: var(--brand-primary);
+            font-weight: 800;
+            box-shadow: 0 0 0 4px var(--brand-primary-light);
+        }
+
+        .pipeline-label-text {
+            font-size: 0.92rem;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--text-muted-mid);
+            letter-spacing: -0.1px;
+            transition: var(--kinetics-smooth);
+            position: relative;
+            z-index: 2;
         }
 
-        .step-node.active .step-label {
-            color: var(--primary-blue);
+        .pipeline-node.status-active .pipeline-label-text {
+            color: var(--brand-primary);
+            font-weight: 700;
         }
 
-        /* Main Workspace Container */
-        .workspace-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 40px;
-            border: 1px solid var(--border-color);
+        .pipeline-node.status-done .pipeline-label-text {
+            color: var(--text-main-heavy);
+        }
+
+        /* ==========================================================================
+           PANEL VIEW ONE: DOCUMENT COLLECTION COMPONENT SYSTEM (PHASE 1)
+           ========================================================================== */
+        .workspace-dashboard-canvas {
+            background: var(--surface-bg-card);
+            border: 1px solid var(--border-card-bounding);
+            border-radius: 24px;
+            padding: 44px;
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 36px;
+            box-shadow: var(--elevation-lg);
         }
 
-        .workspace-title-block h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--text-dark);
+        .view-introductory-header-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .introductory-title-meta {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .introductory-title-meta h1 {
+            font-size: 1.95rem;
+            font-weight: 800;
+            color: var(--text-main-heavy);
+            letter-spacing: -0.75px;
             margin-bottom: 8px;
+            line-height: 1.25;
         }
 
-        .workspace-title-block p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
+        .introductory-title-meta p {
+            font-size: 1.05rem;
+            color: var(--text-muted-mid);
+            font-weight: 500;
+            line-height: 1.45;
         }
 
-        /* Layout Document Grid Block */
         .document-grid-layout {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
         .document-item-node {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
+            border: 1px solid var(--border-clean-line);
+            border-radius: 20px;
+            padding: 32px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            background: #ffffff;
+            justify-content: space-between;
+            gap: 24px;
+            background: var(--surface-bg-card);
+            transition: var(--kinetics-smooth);
+        }
+
+        .document-item-node:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            box-shadow: var(--elevation-md);
         }
 
         .document-meta-header {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             align-items: flex-start;
         }
 
         .document-icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--pill-bg);
-            color: var(--primary-blue);
+            width: 64px;
+            height: 64px;
+            border-radius: var(--geometry-radius-round);
+            background: var(--accent-blue-pill-bg);
+            color: var(--accent-blue-tint);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.6rem;
             flex-shrink: 0;
         }
 
+        .document-details-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
         .document-details-info h3 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 4px;
+            color: var(--text-main-heavy);
         }
 
         .document-details-info p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted-mid);
+            line-height: 1.5;
+            margin-bottom: 6px;
         }
 
         .status-pill-badge {
-            background: var(--pill-bg);
-            color: var(--pill-text);
-            padding: 4px 10px;
-            border-radius: 6px;
+            background: var(--accent-blue-pill-bg);
+            color: var(--accent-blue-tint);
+            padding: 4px 14px;
+            border-radius: var(--geometry-radius-pill);
             font-size: 0.75rem;
             font-weight: 600;
-            width: fit-content;
+            display: inline-block;
         }
 
         .upload-trigger-btn {
             width: 100%;
-            padding: 12px;
-            background: #ffffff;
-            border: 1px solid var(--primary-blue);
-            color: var(--primary-blue);
-            border-radius: 8px;
-            font-size: 0.9rem;
+            padding: 14px;
+            background: var(--surface-bg-card);
+            border: 1.5px solid var(--brand-primary);
+            color: var(--brand-primary);
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.15s ease;
+            transition: var(--kinetics-smooth);
         }
 
         .upload-trigger-btn:hover {
-            background: var(--pill-bg);
+            background: var(--brand-primary-light);
+            border-color: var(--brand-primary-hover);
+            color: var(--brand-primary-hover);
         }
 
-        /* Encryption Shield Secure Information Row */
-        .encryption-security-row {
-            background: var(--pill-bg);
-            border-radius: 12px;
-            padding: 16px 20px;
+        /* ==========================================================================
+           PANEL VIEW TWO: ADVANCED DATA VERIFICATION MATRIX ENGINE (PHASE 3)
+           ========================================================================== */
+        .status-legend-matrix {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .security-left-side {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .security-left-side i {
-            font-size: 1.25rem;
-            color: var(--primary-blue);
-        }
-
-        .security-text-block h4 {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 2px;
-        }
-
-        .security-text-block p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .security-learn-more-link {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--primary-blue);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Interactive Footer Application Passport Block */
-        .passport-action-banner {
-            background: var(--pill-bg);
-            border-radius: 16px;
-            padding: 24px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             gap: 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding-bottom: 4px;
+            user-select: none;
         }
 
-        .passport-banner-left {
+        .legend-matrix-item {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 8px;
         }
 
-        .passport-shield-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 2px solid var(--primary-blue);
-            color: var(--primary-blue);
+        .legend-matrix-item.type-extracted { color: var(--status-green-success); }
+        .legend-matrix-item.type-missing { color: var(--status-red-danger); }
+
+        .canvas-data-segment {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .segment-headline-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 16px;
+            margin-bottom: 8px;
+            user-select: none;
+        }
+
+        .segment-headline-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            background: var(--brand-primary-light);
+            color: var(--brand-primary);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.35rem;
+            font-size: 1.15rem;
             flex-shrink: 0;
         }
 
-        .passport-banner-text h2 {
-            font-size: 1.15rem;
+        .segment-headline-header h2 {
+            font-size: 1.2rem;
             font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 4px;
+            color: var(--text-main-heavy);
+            letter-spacing: -0.2px;
         }
 
-        .passport-banner-text p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.4;
+        .matrix-row-entry {
+            display: grid;
+            grid-template-columns: 2.5fr 3.5fr 0.6fr 0.8fr;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f8fafc;
+            transition: var(--kinetics-smooth);
         }
 
-        .save-continue-btn {
-            padding: 14px 28px;
-            background-color: var(--primary-blue);
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
+        .matrix-row-entry:last-child {
+            border-bottom: none;
+        }
+
+        .matrix-row-entry:hover {
+            background-color: var(--surface-bg-hover-row);
+            padding-left: 8px;
+            padding-right: 8px;
+            margin-left: -8px;
+            margin-right: -8px;
+            border-radius: var(--geometry-radius-md);
+        }
+
+        .entry-data-label {
+            font-size: 0.98rem;
+            color: var(--text-muted-mid);
+            font-weight: 500;
+        }
+
+        .entry-data-value {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text-main-heavy);
+            word-break: break-word;
+            padding-right: 12px;
+        }
+
+        .entry-status-node {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            user-select: none;
+        }
+
+        .entry-status-node.state-valid { color: var(--status-green-success); }
+        .entry-status-node.state-missing { color: var(--status-red-danger); }
+
+        .entry-action-trigger-btn {
+            background: var(--surface-bg-card);
+            border: 1px solid var(--border-clean-line);
+            color: var(--brand-primary);
+            padding: 8px 18px;
+            border-radius: var(--geometry-radius-md);
+            font-size: 0.88rem;
             font-weight: 600;
             cursor: pointer;
+            text-align: center;
+            transition: var(--kinetics-smooth);
+            width: 100%;
+            max-width: 80px;
+            justify-self: end;
+            outline: none;
+            user-select: none;
+        }
+
+        .entry-action-trigger-btn:hover {
+            background: var(--brand-primary-light);
+            border-color: var(--brand-primary-border);
+            color: var(--brand-primary-hover);
+        }
+
+        /* ==========================================================================
+           DATA SECURITY & ARCHIVAL ENCRYPTION COMPONENT SHIELD ROW
+           ========================================================================== */
+        .workspace-security-guarantee-bar {
+            background: #f8fafc;
+            border: 1px solid var(--border-clean-line);
+            border-radius: var(--geometry-radius-lg);
+            padding: 20px 24px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: background 0.15s ease;
+            justify-content: space-between;
+            gap: 20px;
+            user-select: none;
+        }
+
+        .security-guarantee-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .security-guarantee-left i {
+            font-size: 1.4rem;
+            color: var(--brand-primary);
+            background: var(--surface-bg-card);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--geometry-radius-round);
+            border: 1px solid var(--border-clean-line);
+        }
+
+        .security-guarantee-copywriting {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .security-guarantee-copywriting h4 {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text-main-heavy);
+        }
+
+        .security-guarantee-copywriting p {
+            font-size: 0.88rem;
+            color: var(--text-muted-mid);
+            font-weight: 500;
+        }
+
+        .security-guarantee-anchor-link {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             white-space: nowrap;
+            transition: var(--kinetics-smooth);
         }
 
-        .save-continue-btn:hover {
-            background-color: var(--primary-blue-hover);
+        .security-guarantee-anchor-link:hover {
+            color: var(--brand-primary-hover);
+            transform: translateX(2px);
+            text-decoration: underline;
         }
 
-        .copyright-container-footer {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        /* ==========================================================================
+           CONVERSION ACTION BANNER ENGAGEMENT HUB COMPONENT
+           ========================================================================== */
+        .master-conversion-banner {
+            background: var(--brand-primary-light);
+            border: 1px solid var(--brand-primary-border);
+            border-radius: var(--geometry-radius-xl);
+            padding: 36px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            box-shadow: var(--elevation-md);
+        }
+
+        .conversion-banner-details {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .conversion-banner-icon-frame {
+            width: 64px;
+            height: 64px;
+            background: var(--surface-bg-card);
+            border: 1px solid var(--brand-primary-border);
+            border-radius: var(--geometry-radius-round);
+            color: var(--brand-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.65rem;
+            flex-shrink: 0;
+            box-shadow: var(--elevation-sm);
+        }
+
+        .conversion-banner-text-strings h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-main-heavy);
+            margin-bottom: 6px;
+            letter-spacing: -0.25px;
+        }
+
+        .conversion-banner-text-strings p {
+            font-size: 1rem;
+            color: var(--text-muted-mid);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .master-submit-action-trigger {
+            background: var(--brand-primary);
+            color: var(--text-absolute-white);
+            border: none;
+            padding: 18px 40px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--kinetics-smooth);
+            white-space: nowrap;
+            box-shadow: var(--elevation-brand-glow);
+            outline: none;
+            user-select: none;
+        }
+
+        .master-submit-action-trigger:hover {
+            background: var(--brand-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 82, 204, 0.25);
+        }
+
+        .master-submit-action-trigger:active {
+            transform: translateY(0);
+            background: var(--brand-primary-active);
+        }
+
+        .master-submit-action-trigger i {
+            transition: var(--kinetics-smooth);
+        }
+
+        .master-submit-action-trigger:hover i {
+            transform: translateX(4px);
+        }
+
+        /* ==========================================================================
+           SYSTEM FOOTER BRAND CREDENTIAL ARCHIVE
+           ========================================================================== */
+        footer.system-copyright-container {
             text-align: center;
-            width: 100%;
-            margin-top: 16px;
+            font-size: 0.88rem;
+            color: var(--text-muted-mid);
+            font-weight: 500;
+            margin-top: 12px;
+            user-select: none;
         }
 
-        /* Fluid breakpoints matching responsive layout system specifications */
-        @media (max-width: 900px) {
+        /* ==========================================================================
+           DYNAMIC STABILIZATION RESPONSIVE INTERACTION MEDIA RULES GRID
+           ========================================================================== */
+        @media (max-width: 1024px) {
             .document-grid-layout {
                 grid-template-columns: 1fr;
+            }
+            .workspace-dashboard-canvas {
+                padding: 32px;
+            }
+        }
+
+        @media (max-width: 920px) {
+            .wizard-pipeline-card {
+                padding: 16px 24px;
+                border-radius: var(--geometry-radius-xl);
+            }
+            .pipeline-label-text {
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 768px) {
-            .progress-container {
-                padding: 16px;
+            .workspace-wrapper {
+                padding: 24px 16px 60px 16px;
+                gap: 28px;
             }
-            .step-label {
+            
+            .pipeline-label-text {
                 display: none;
             }
-            .step-node:not(:last-child)::after {
-                right: -25%;
-                width: 50%;
+            
+            .pipeline-node.status-active .pipeline-label-text {
+                display: block;
+                font-size: 0.85rem;
+                max-width: 90px;
+                white-space: normal;
+                line-height: 1.2;
             }
-            .workspace-card {
-                padding: 24px;
+            
+            .pipeline-node:not(:last-child)::after {
+                right: -40%;
+                width: 80%;
             }
-            .passport-action-banner {
+            
+            .workspace-dashboard-canvas {
+                padding: 28px 20px;
+                gap: 36px;
+            }
+            
+            .matrix-row-entry {
+                grid-template-columns: 1fr auto;
+                gap: 8px 16px;
+                padding: 18px 0;
+                border-bottom: 1px dashed var(--border-clean-line);
+            }
+            
+            .matrix-row-entry:hover {
+                background-color: transparent;
+                padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0;
+            }
+            
+            .entry-data-label {
+                grid-column: 1 / span 2;
+                font-size: 0.92rem;
+            }
+            
+            .entry-data-value {
+                grid-column: 1;
+                grid-row: 2;
+                font-size: 0.95rem;
+                padding-right: 0;
+            }
+            
+            .entry-status-node {
+                grid-column: 2;
+                grid-row: 2;
+                justify-content: flex-end;
+            }
+            
+            .entry-action-trigger-btn {
+                grid-column: 1 / span 2;
+                grid-row: 3;
+                max-width: 100%;
+                margin-top: 6px;
+                padding: 10px;
+                font-size: 0.92rem;
+            }
+            
+            .workspace-security-guarantee-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+                gap: 16px;
+            }
+            
+            .security-guarantee-anchor-link {
+                align-self: flex-end;
+                padding-top: 4px;
+            }
+            
+            .master-conversion-banner {
                 flex-direction: column;
                 text-align: center;
-                padding: 24px;
+                padding: 36px 24px;
+                gap: 32px;
             }
-            .passport-banner-left {
+            
+            .conversion-banner-details {
                 flex-direction: column;
-                gap: 12px;
+                gap: 16px;
             }
-            .save-continue-btn {
+            
+            .master-submit-action-trigger {
                 width: 100%;
                 justify-content: center;
+                padding: 18px;
             }
         }
 
         @media (max-width: 480px) {
-            .header {
-                height: 60px;
+            .header-inner {
+                height: 64px;
                 padding: 0 16px;
             }
-            .wrapper {
-                padding: 16px;
+            .introductory-title-meta h1 {
+                font-size: 1.6rem;
+                letter-spacing: -0.5px;
+            }
+            .introductory-title-meta p {
+                font-size: 0.95rem;
+            }
+            .status-legend-matrix {
+                width: 100%;
+                justify-content: flex-start;
                 gap: 16px;
+                font-size: 0.85rem;
             }
-            .workspace-card {
-                padding: 20px 16px;
-                gap: 24px;
+            
+            .wizard-pipeline-card {
+                padding: 16px 12px;
+                gap: 4px;
+                border-radius: var(--geometry-radius-lg);
             }
-            .workspace-title-block h1 {
-                font-size: 1.4rem;
+            .pipeline-node.status-active .pipeline-label-text {
+                font-size: 0.78rem;
+                max-width: 70px;
             }
-            .encryption-security-row {
+            .pipeline-node { gap: 6px; }
+            .pipeline-badge-circle {
+                width: 28px;
+                height: 28px;
+                font-size: 0.82rem;
+            }
+            
+            .workspace-dashboard-canvas {
+                padding: 24px 16px;
+                gap: 32px;
+                border-radius: var(--geometry-radius-lg);
+            }
+            .document-item-node {
+                padding: 20px;
+                border-radius: var(--geometry-radius-xl);
+            }
+            .document-icon-box {
+                width: 52px; height: 52px; font-size: 1.3rem;
+            }
+            .segment-headline-header { gap: 12px; }
+            .segment-headline-icon-wrapper {
+                width: 34px; height: 34px; font-size: 1rem;
+            }
+            .segment-headline-header h2 { font-size: 1.1rem; }
+            .matrix-row-entry { padding: 14px 0; }
+            .entry-data-label { font-size: 0.88rem; }
+            .entry-data-value { font-size: 0.92rem; }
+            
+            .workspace-security-guarantee-bar {
+                padding: 16px 12px;
+                align-items: center;
+                text-align: center;
+            }
+            .security-guarantee-left {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
+                gap: 10px;
             }
-            .security-learn-more-link {
-                align-self: flex-end;
+            .security-guarantee-left i { font-size: 1.25rem; }
+            .security-guarantee-anchor-link {
+                align-self: center;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .pipeline-node.status-active .pipeline-label-text {
+                display: none;
+            }
+            .wizard-pipeline-card {
+                justify-content: space-around;
+                padding: 12px 6px;
+            }
+            .pipeline-node:not(:last-child)::after {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="brand">
-            <i class="fas fa-layer-group"></i> MyApply <span>SA</span>
-        </div>
-        <div class="user-profile">
-            <i class="fas fa-user-circle"></i> Hi, Paul <i class="fas fa-chevron-down"></i>
+    <header class="app-navigation-bar">
+        <div class="navigation-container">
+            <a href="#" class="navigation-brand-identity">
+                <div class="brand-logo-graphics">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                MyApply <span>SA</span>
+            </a>
+            <div class="user-profile-badge-menu">
+                <i class="fas fa-user-circle"></i>
+                <span>Hi, Paul</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
     </header>
 
-    <div class="wrapper">
-        
-        <nav class="progress-container">
-            <div class="step-node active">
-                <div class="step-circle">1</div>
-                <div class="step-label">Upload Documents</div>
+    <main class="workspace-wrapper">
+
+        <nav class="wizard-pipeline-card">
+            <div class="pipeline-node status-done">
+                <div class="pipeline-badge-circle"><i class="fas fa-check"></i></div>
+                <div class="pipeline-label-text">Upload Documents</div>
             </div>
-            <div class="step-node">
-                <div class="step-circle">2</div>
-                <div class="step-label">AI Extraction</div>
+            <div class="pipeline-node status-done">
+                <div class="pipeline-badge-circle"><i class="fas fa-check"></i></div>
+                <div class="pipeline-label-text">AI Extraction</div>
             </div>
-            <div class="step-node">
-                <div class="step-circle">3</div>
-                <div class="step-label">Review & Verify</div>
+            <div class="pipeline-node status-active">
+                <div class="pipeline-badge-circle">3</div>
+                <div class="pipeline-label-text">Review & Verify</div>
             </div>
-            <div class="step-node">
-                <div class="step-circle">4</div>
-                <div class="step-label">Your Passport</div>
+            <div class="pipeline-node">
+                <div class="pipeline-badge-circle">4</div>
+                <div class="pipeline-label-text">Your Passport</div>
             </div>
         </nav>
 
-        <main class="workspace-card">
+        <div class="workspace-dashboard-canvas">
             
-            <div class="workspace-title-block">
-                <h1>Upload Your Documents</h1>
-                <p>These documents help us build your Academic Passport.</p>
+            <div class="view-introductory-header-block">
+                <div class="introductory-title-meta">
+                    <h1>Review & Verify Your Information</h1>
+                    <p>Please review the extracted information and make any necessary corrections.</p>
+                </div>
+                <div class="status-legend-matrix">
+                    <div class="legend-matrix-item type-extracted"><i class="fas fa-check-circle"></i> Extracted</div>
+                    <div class="legend-matrix-item type-missing"><i class="fas fa-times-circle"></i> Missing</div>
+                </div>
             </div>
 
-            <div class="document-grid-layout">
+            <section class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="far fa-user"></i></div>
+                    <h2>Personal Details</h2>
+                </div>
                 
-                <div class="document-item-node">
-                    <div class="document-meta-header">
-                        <div class="document-icon-box"><i class="far fa-id-card"></i></div>
-                        <div class="document-details-info">
-                            <h3>ID Document</h3>
-                            <p>ID book, ID card, or Smart ID card</p>
-                            <div class="status-pill-badge">Not uploaded</div>
-                        </div>
-                    </div>
-                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Full Name</span>
+                    <span class="entry-data-value">Paul</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="document-item-node">
-                    <div class="document-meta-header">
-                        <div class="document-icon-box"><i class="fas fa-graduation-cap"></i></div>
-                        <div class="document-details-info">
-                            <h3>Matric Results</h3>
-                            <p>NSC statement of results</p>
-                            <div class="status-pill-badge">Not uploaded</div>
-                        </div>
-                    </div>
-                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Identity Number</span>
+                    <span class="entry-data-value">************</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="document-item-node">
-                    <div class="document-meta-header">
-                        <div class="document-icon-box"><i class="fas fa-home"></i></div>
-                        <div class="document-details-info">
-                            <h3>Proof of Residence</h3>
-                            <p>Utility bill, lease agreement or affidavit</p>
-                            <div class="status-pill-badge">Not uploaded</div>
-                        </div>
-                    </div>
-                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Date of Birth</span>
+                    <span class="entry-data-value">12 May 2006</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-                <div class="document-item-node">
-                    <div class="document-meta-header">
-                        <div class="document-icon-box"><i class="far fa-file-alt"></i></div>
-                        <div class="document-details-info">
-                            <h3>Other Documents</h3>
-                            <p>Any other supporting documents</p>
-                            <div class="status-pill-badge">Not uploaded</div>
-                        </div>
-                    </div>
-                    <button class="upload-trigger-btn"><i class="fas fa-upload"></i> Upload</button>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Email Address</span>
+                    <span class="entry-data-value">paul@example.com</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
                 </div>
 
-            </div>
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Phone Number</span>
+                    <span class="entry-data-value">067 123 4567</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+            </section>
 
-            <div class="encryption-security-row">
-                <div class="security-left-side">
+            <section class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="fas fa-graduation-cap"></i></div>
+                    <h2>School Information</h2>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">School Name</span>
+                    <span class="entry-data-value">ABC High School</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Province</span>
+                    <span class="entry-data-value">Gauteng</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Year Completed</span>
+                    <span class="entry-data-value">2023</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+            </section>
+
+            <section class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="far fa-file-alt"></i></div>
+                    <h2>Subjects & Marks</h2>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Mathematics</span>
+                    <span class="entry-data-value">85%</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">English</span>
+                    <span class="entry-data-value">78%</span>
+                    <div class="entry-status-node state-valid"><i class="fas fa-check-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Physical Sciences</span>
+                    <span class="entry-data-value">--</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">Life Sciences</span>
+                    <span class="entry-data-value">--</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+
+                <div class="matrix-row-entry">
+                    <span class="entry-data-label">APS (Estimated)</span>
+                    <span class="entry-data-value">--</span>
+                    <div class="entry-status-node state-missing"><i class="fas fa-times-circle"></i></div>
+                    <button class="entry-action-trigger-btn">Edit</button>
+                </div>
+            </section>
+
+            <section class="canvas-data-segment">
+                <div class="segment-headline-header">
+                    <div class="segment-headline-icon-wrapper"><i class="fas fa-folder-open"></i></div>
+                    <h2>Document Upload Verification Grid</h2>
+                </div>
+                <div style="margin-top: 12px; margin-bottom: 24px;">
+                    <p style="font-size: 0.95rem; color: var(--text-muted-mid); line-height: 1.5;">Manage your digital assets securely mapped into your passport profile.</p>
+                </div>
+                
+                <div class="document-grid-layout">
+                    <div class="document-item-node">
+                        <div class="document-meta-header">
+                            <div class="document-icon-box"><i class="far fa-id-card"></i></div>
+                            <div class="document-details-info">
+                                <h3>ID Document</h3>
+                                <p>Official Smart ID card framework file allocation reference</p>
+                                <span class="status-pill-badge">Extracted Successfully</span>
+                            </div>
+                        </div>
+                        <button class="upload-trigger-btn"><i class="fas fa-sync-alt"></i> Reupload asset</button>
+                    </div>
+
+                    <div class="document-item-node">
+                        <div class="document-meta-header">
+                            <div class="document-icon-box"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="document-details-info">
+                                <h3>Matric Statement</h3>
+                                <p>Official National Senior Certificate statement validation metrics</p>
+                                <span class="status-pill-badge">Extracted Successfully</span>
+                            </div>
+                        </div>
+                        <button class="upload-trigger-btn"><i class="fas fa-sync-alt"></i> Reupload asset</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="workspace-security-guarantee-bar">
+                <div class="security-guarantee-left">
                     <i class="fas fa-lock"></i>
-                    <div class="security-text-block">
-                        <h4>Your data is secure</h4>
-                        <p>Your documents are encrypted and stored securely.</p>
+                    <div class="security-guarantee-copywriting">
+                        <h4>Your data footprint is heavily protected</h4>
+                        <p>All institutional data transmission pipelines use end-to-end symmetric encryption protocols securely.</p>
                     </div>
                 </div>
-                <a href="#" class="security-learn-more-link">Learn more <i class="fas fa-chevron-right"></i></a>
+                <a href="#" class="security-guarantee-anchor-link">Security Center <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i></a>
             </div>
 
-        </main>
+        </div>
 
-        <section class="passport-action-banner">
-            <div class="passport-banner-left">
-                <div class="passport-shield-avatar"><i class="fas fa-user-shield"></i></div>
-                <div class="passport-banner-text">
-                    <h2>One passport. Many opportunities.</h2>
-                    <p>Your Academic Passport makes applying to universities and bursaries faster, easier, and more accurate.</p>
+        <section class="master-conversion-banner">
+            <div class="conversion-banner-details">
+                <div class="conversion-banner-icon-frame">
+                    <i class="fas fa-passport"></i>
+                </div>
+                <div class="conversion-banner-text-strings">
+                    <h3>One Passport. Endless Opportunities.</h3>
+                    <p>Your unified verified passport file links instantly with participating universities, institutions, and bursary administrators across South Africa.</p>
                 </div>
             </div>
-            <button class="save-continue-btn">Save & Continue <i class="fas fa-arrow-right"></i></button>
+            <button class="master-submit-action-trigger">Save & Finish Pipeline <i class="fas fa-arrow-right"></i></button>
         </section>
 
-        <footer class="copyright-container-footer">
-            &copy; 2025 MyApply SA. All rights reserved.
+        <footer class="system-copyright-container">
+            &copy; 2026 MyApply SA Academic Passport Management Framework System Portal. All rights reserved. Code footprint optimized for production distribution architectures.
         </footer>
 
-    </div>
+    </main>
+
 </body>
 </html>
