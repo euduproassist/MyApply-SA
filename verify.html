@@ -10,43 +10,56 @@
     
     <style>
         /* ==========================================================================
-           MODERN ENTERPRISE SYSTEM VARIABLES & CONFIGURATION CANVAS 
+           GLOBAL DESIGN INTENT MASTER DESIGN TOKENS (EXHAUSTIVE VARIABLE CANVAS)
            ========================================================================== */
         :root {
+            /* Branding & Corporate Color Profiles */
             --brand-blue: #0052cc;
             --brand-blue-hover: #0043a4;
             --brand-blue-active: #00317a;
             --brand-blue-light: #eff6ff;
             --brand-blue-border: #bfdbfe;
-            --brand-blue-focus: rgba(0, 82, 204, 0.15);
+            --brand-blue-focus: rgba(0, 82, 204, 0.18);
             
+            /* Text Hierarchy Semantic Color Matrix */
             --color-text-main: #0f172a;
             --color-text-muted: #64748b;
             --color-text-light: #94a3b8;
             --color-text-white: #ffffff;
             
+            /* Workspace Architectural Surfaces */
             --color-bg-workspace: #f8fafc;
             --color-bg-card: #ffffff;
             --color-bg-hover: #fafafa;
+            --color-bg-alt-row: #f8fafc;
             
+            /* Micro Structural Borders & Separators */
             --color-border-clean: #e2e8f0;
             --color-border-card: #e2e8f0;
             --color-border-dashed: #cbd5e1;
             
+            /* State Machine Informational Colors */
             --ui-green-success: #10b981;
             --ui-green-light: #ecfdf5;
+            --ui-green-border: #a7f3d0;
             --ui-red-danger: #ef4444;
             --ui-red-light: #fef2f2;
+            --ui-red-border: #fca5a5;
             
+            /* Typography Scale & Hierarchy Elements */
             --font-stack-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* Kinematics & Interaction Micro-Transitions */
             --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-snappy: all 0.15s cubic-bezier(0, 0, 0.2, 1);
             
+            /* Ambient Deep Elevation Layer Shadows */
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.02), 0 4px 6px -2px rgba(15, 23, 42, 0.01);
             --shadow-brand: 0 4px 14px rgba(0, 82, 204, 0.18);
             
+            /* Global Surface Boundary Radii Matrix */
             --radius-sm: 6px;
             --radius-md: 8px;
             --radius-lg: 12px;
@@ -56,7 +69,7 @@
         }
 
         /* ==========================================================================
-           STRICT ANTI-HORIZONTAL OVERFLOW & RESET RULES ARCHITECTURE
+           HARD ARCHITECTURAL RECONCILIATION & ANTI-HORIZONTAL SCROLL SAFETIES
            ========================================================================== */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -95,7 +108,7 @@
         }
 
         /* ==========================================================================
-           TOP NAVIGATION BAR LAYOUT 
+           TOP MAIN SYSTEM NAVIGATION LAYOUT BLOCK 
            ========================================================================== */
         header.app-navigation-bar {
             width: 100%;
@@ -197,7 +210,7 @@
         }
 
         /* ==========================================================================
-           CENTRAL WORKSPACE CONTENT FRAME
+           CENTRAL WORKSPACE CONTAINER MANAGEMENT FRAME
            ========================================================================== */
         .workspace-wrapper {
             width: 100%;
@@ -210,7 +223,7 @@
         }
 
         /* ==========================================================================
-           STEP WIZARD INTRALINE PIPELINE CORE INTERFACE
+           STEP WIZARD WORKFLOW PIPELINE COMPONENT DESIGN
            ========================================================================== */
         .wizard-pipeline-card {
             background: var(--color-bg-card);
@@ -289,7 +302,7 @@
         }
 
         /* ==========================================================================
-           INTRODUCTORY META STRUCTURAL HEADER ROW
+           INTRODUCTORY TITLE HEADER MATRIX BLOCK
            ========================================================================== */
         .view-introductory-header-block {
             display: flex;
@@ -339,7 +352,7 @@
         .legend-matrix-item.type-missing { color: var(--ui-red-danger); }
 
         /* ==========================================================================
-           UNIFIED MATRIX CANVAS DASHBOARD SHEET 
+           UNIFIED CENTRAL CANVAS DASHBOARD LAYER 
            ========================================================================== */
         .workspace-dashboard-canvas {
             background: var(--color-bg-card);
@@ -388,7 +401,7 @@
         }
 
         /* ==========================================================================
-           RIGID COMPONENT GRID SYSTEM MATRIX 
+           RIGID COMPONENT GRID ENGINE FOR ABSOLUTE AXIS ALIGNMENT
            ========================================================================== */
         .matrix-row-entry {
             display: grid;
@@ -468,7 +481,7 @@
         }
 
         /* ==========================================================================
-           ENTERPRISE DATA CRYPTOGRAPHIC SECURITY BLOCK BAR
+           ENTERPRISE DATA CRYPTOGRAPHIC SECURITY BLOCK COMPONENT
            ========================================================================== */
         .workspace-security-guarantee-bar {
             background: var(--brand-blue-light);
@@ -531,7 +544,7 @@
         }
 
         /* ==========================================================================
-           HIGH ADAPTIVE-CONVERSION ANCHORED ACTION BANNER
+           HIGH LEVEL CONVERSION BANNER CORE INTERACTION ENGINE
            ========================================================================== */
         .master-conversion-banner {
             background: var(--brand-blue-light);
@@ -620,7 +633,7 @@
         }
 
         /* ==========================================================================
-           SYSTEM INHERENT PERSISTENT FOOTER MATRIX
+           SYSTEM COHESIVE SYSTEM PERSISTENT ARCHIVAL FOOTER SYSTEM
            ========================================================================== */
         footer.system-copyright-container {
             text-align: center;
@@ -632,7 +645,7 @@
         }
 
         /* ==========================================================================
-           MULTI-TIER RESPONSIVE ENGINEERING BREAKPOINTS (ZERO HORIZONTAL BLEED)
+           DYNAMIC MEDIATED BREAKPOINTS RESIZING LAYOUT ENGINE (0% SIDEWAYS BLEED)
            ========================================================================== */
         @media (max-width: 920px) {
             .wizard-pipeline-card {
@@ -650,7 +663,7 @@
                 gap: 28px;
             }
             
-            /* Structural Transformation Matrix for Step Stepper System */
+            /* Fluid Linear Structural Transformation Matrix for Stepper Pipeline Component */
             .wizard-pipeline-card {
                 border-radius: var(--radius-lg);
                 padding: 20px 16px;
@@ -660,7 +673,7 @@
                 gap: 8px;
             }
             .pipeline-label-text {
-                display: none; /* Safely strips passive text layout rows to protect viewport boundaries */
+                display: none; /* Dynamic layout clipping for mid-tier tablets */
             }
             .pipeline-node.status-active .pipeline-label-text {
                 display: block;
@@ -679,7 +692,7 @@
                 gap: 36px;
             }
             
-            /* Rigid Desktop Grid System to Fluid Cellular Display conversion safeguard */
+            /* Desktop Multi-column Grid Axis safely remapped into Fluid Rows Matrix */
             .matrix-row-entry {
                 grid-template-columns: 1fr auto;
                 gap: 8px 16px;
@@ -767,7 +780,7 @@
                 font-size: 0.85rem;
             }
             
-            /* Clean Minimal Display Engine for Micro Mobile Viewports */
+            /* High Reliability Adaptive UI Engine for Micro Mobile viewports down to 320px */
             .wizard-pipeline-card {
                 padding: 16px 12px;
                 gap: 4px;
@@ -826,17 +839,17 @@
             }
         }
         
-        /* Ultra Compression Safety Guardrail down to 320px Width screens */
+        /* Ultra High Density Micro Layout Compactor Safety Guardrail (320px screen widths) */
         @media (max-width: 360px) {
             .pipeline-node.status-active .pipeline-label-text {
-                display: none; /* Hard layout structural squeeze to drop active text elements entirely */
+                display: none; /* Structural collapse mechanism to block horizontal overflow entirely */
             }
             .wizard-pipeline-card {
                 justify-content: space-around;
                 padding: 12px 6px;
             }
             .pipeline-vector-divider {
-                display: none; /* Safely clears layout blocking rules */
+                display: none;
             }
         }
     </style>
